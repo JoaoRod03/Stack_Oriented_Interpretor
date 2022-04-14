@@ -84,7 +84,7 @@ int divide (STACK *s,char *token) {
     if(strcmp(token, "/") == 0) {
         int A = pop(s);
         int B = pop(s);
-        push(s, A / B);
+        push(s, B / A);
         return 1;
     }
     return 0;
