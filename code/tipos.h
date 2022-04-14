@@ -11,7 +11,7 @@
 
 // Tipos
 
-/// Struct da stack
+/// Struct que define a stack
 typedef struct stack {
     int pilha [STACK_SIZE]; 
     int topo; 
@@ -19,22 +19,22 @@ typedef struct stack {
 
 // Iniciar funções
 STACK* nova();
-void push();
-int pop();
-void handle();
-int soma();
-int menos();
-int mul();
-int divide();
-int resto();
-int expo();
-int incrementa();
-int decrementa();
-int num();
-long binario();
-int logica_and();
-int logica_or();
-int logica_xor();
-int logica_not();
+void push(STACK *s,int x);
+int pop(STACK *s);
+void handle(STACK *s,char *token);
+int soma(STACK *s,char *token);
+int menos(STACK *s,char *token);
+int mul(STACK *s,char *token);
+int divide(STACK *s,char *token);
+int resto(STACK *s,char *token);
+int expo(STACK *s,char *token);
+int incrementa(STACK *s,char *token);
+int decrementa(STACK *s,char *token);
+int num(STACK *s,char *token);
+// long binario(); Não implementado
+int logica_and(STACK *s,char *token);
+int logica_or(STACK *s,char *token);
+int logica_xor(STACK *s,char *token);
+int logica_not(STACK *s,char *token);
 
-#endif
+#endif // TIPOS_H

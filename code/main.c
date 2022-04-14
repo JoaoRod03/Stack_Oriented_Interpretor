@@ -21,7 +21,6 @@
 #include <string.h>
 #include <math.h>
 #include "tipos.h"
-#include "funcoes.c"
 
 int main() {
     STACK *s = nova();

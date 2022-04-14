@@ -4,8 +4,11 @@
 */
 
 // Bibliotecas
-#include "tipos.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include "tipos.h"
 
 /// Função responsavel por alocar o espaço necessario na memoria para criar uma stack.
 STACK* nova() {
@@ -30,12 +33,11 @@ int pop(STACK *s) {
 *   @param [in] Token
 */ 
 void handle (STACK *s,char *token){
-    soma (s,token) || menos (s,token) || mul (s,token) ||
+    if (soma (s,token) || menos (s,token) || mul (s,token) ||
     incrementa (s,token) || decrementa (s,token) ||
     divide (s,token) || resto (s,token)|| expo (s,token) ||
-    logica_and(s,token) || logica_or(s,token) || logica_xor(s,token) || 
-    logica_not(s,token) ||
-    num (s,token); // Deixar no fim
+    logica_and(s,token) || logica_or(s,token) || logica_xor(s,token) || logica_not(s,token) ||
+    num (s,token)) {return;} // Deixar no fim
 }
 
 /// Verifica se não há nenhum operador no input recebido/token desconhecido. 
