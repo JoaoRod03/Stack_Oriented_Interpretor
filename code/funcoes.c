@@ -1,24 +1,34 @@
+/**
+* @file funcoes.c
+* Ficheiro .c que contém as funções utilizadas no projeto.
+*/
+
+// Bibliotecas
 #include "tipos.h"
 #include <stdio.h>
 
+/// Função responsavel por alocar o espaço necessario na memoria para criar uma stack.
 STACK* nova() {
     return ((STACK *) malloc(sizeof(STACK)));
 }
 
-// Insere elemento no topo da stack
+/// Função que insere um elemento x no topo da stack.
 void push(STACK *s,int x) {
     s->topo++ ;
     s->pilha[s->topo] = x;
 }
 
-// Retira elemento do topo da stack
+/// Função que retira o elemento que se encontra no topo da stack.
 int pop(STACK *s) {
     int v = s->pilha[s->topo];
     s->topo--;
     return v ;
 }
 
-// Associa um operador/token a uma operação
+/** Função responsavel por associar um token de um operador á sua função correspondente
+*   @param [in] Stack
+*   @param [in] Token
+*/ 
 void handle (STACK *s,char *token){
     soma (s,token) || menos (s,token) || mul (s,token) ||
     incrementa (s,token) || decrementa (s,token) ||
@@ -28,7 +38,7 @@ void handle (STACK *s,char *token){
     num (s,token); // Deixar no fim
 }
 
-// Verifica se não há nenhum operador no input, coloca os numeros na stack
+/// Verifica se não há nenhum operador no input recebido/token desconhecido. 
 int num (STACK *s,char *token) {
     int val;
     sscanf(token, "%d", &val);
@@ -36,7 +46,7 @@ int num (STACK *s,char *token) {
     return 1 ;
 }
 
-// Soma dois elementos da stack e coloca o resultado nesta
+/// Função que soma dois elementos da stack e coloca o resultado no topo desta.
 int soma (STACK *s,char *token) {
     if(strcmp(token, "+") == 0) {
         int A = pop(s);
@@ -47,7 +57,7 @@ int soma (STACK *s,char *token) {
     return 0 ;
 }
 
-// Subtrai dois elementos da stack e coloca o resultado nesta
+/// Função que subtrai dois elementos da stack e coloca o resultado no topo desta.
 int menos (STACK *s,char *token) {
     if(strcmp(token, "-") == 0) {
         int B = pop(s);
@@ -58,7 +68,7 @@ int menos (STACK *s,char *token) {
     return 0 ;
 }
 
-// Multiplica dois elementos da stack e coloca o resultado nesta
+/// Função que multiplica dois elementos da stack e coloca o resultado no topo desta.
 int mul (STACK *s,char *token) {
     if(strcmp(token, "*") == 0) {
         int A = pop(s);
@@ -69,7 +79,7 @@ int mul (STACK *s,char *token) {
     return 0;
 }
 
-// Divide dois elementos da stack e coloca o resultado nesta
+/// Função que divide dois elementos da stack e coloca o resultado no topo desta.
 int divide (STACK *s,char *token) {
     if(strcmp(token, "/") == 0) {
         int A = pop(s);
@@ -80,7 +90,7 @@ int divide (STACK *s,char *token) {
     return 0;
 }
 
-// Calcula o resto da divisão de dois elementos da stack e coloca o resultado nesta
+/// Função que calcula o resto da divisao de dois elementos da stack e coloca o resultado no topo desta.
 int resto (STACK *s,char *token) {
     if(strcmp(token, "%") == 0) {
         int A = pop(s);
@@ -91,7 +101,7 @@ int resto (STACK *s,char *token) {
     return 0;
 }
 
-// Calcula o resultado de elevar um elemento da stack a outro, coloca o resultado na stack
+/// Calcula o resultado de elevar um elemento da stack a outro, coloca o resultado no topo da stack.
 int expo (STACK *s,char *token) {
     if(strcmp(token, "#") == 0) {
         int A = pop(s);
@@ -102,7 +112,7 @@ int expo (STACK *s,char *token) {
     return 0;
 }
 
-// Incrementa um elemento da stack em 1 valor
+/// Incrementa o valor de um elemento da stack.
 int incrementa (STACK *s,char *token) {
     if(strcmp(token, ")") == 0) {
         int A = pop(s);
@@ -112,7 +122,7 @@ int incrementa (STACK *s,char *token) {
     return 0 ;
 }
 
-// Decrementa um elemento da stack em 1 valor
+/// Decrementa o valor de um elemento da stack.
 int decrementa (STACK *s,char *token) {
     if(strcmp(token, "(") == 0) {
         int A = pop(s);
@@ -122,7 +132,8 @@ int decrementa (STACK *s,char *token) {
     return 0 ;
 }
 
-// Transforma um numero decimal em um numero binario
+// NAO UTILIZADO: Transforma um numero decimal em um numero binario
+/*
 long binario (int x) {
 	long r=0;
     int i=0,resto=0;
@@ -134,8 +145,9 @@ long binario (int x) {
 	}
 	return r;
 } 
+*/
 
-// Realiza a operação (and / &) ao nivel binario
+/// Realiza a operação (and / &) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int logica_and (STACK *s,char *token) {
     if(strcmp(token, "&") == 0) {
         int A = pop(s);
@@ -146,7 +158,7 @@ int logica_and (STACK *s,char *token) {
     return 0;
 }
 
-// Realiza a operação (or / |) ao nivel binario
+/// Realiza a operação (or / |) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int logica_or (STACK *s,char *token) {
     if(strcmp(token, "|") == 0) {
         int A = pop(s);
@@ -157,7 +169,7 @@ int logica_or (STACK *s,char *token) {
     return 0;
 }
 
-// Realiza a operação (xor / ^) ao nivel binario
+/// Realiza a operação (xor / ^) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int logica_xor (STACK *s,char *token) {
     if(strcmp(token, "^") == 0) {
         int A = pop(s);
@@ -168,7 +180,7 @@ int logica_xor (STACK *s,char *token) {
     return 0;
 }
 
-// Realiza a operação (not / ~) ao nivel binario
+/// Realiza a operação (not / ~) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int logica_not (STACK *s,char *token) {
     if(strcmp(token, "~") == 0) {
         int A = pop(s);
@@ -178,10 +190,9 @@ int logica_not (STACK *s,char *token) {
     return 0;
 }
 
-//////////////////////////////////////////////////////////
-// prototipos ////////////////////////////////////////////
-// GUIAO 2    ////////////////////////////////////////////
-//////////////////////////////////////////////////////////
+
+// Prototipos ------------------------------------------- //
+// GUIAO 2    ------------------------------------------- //
 
 /*
 int duplicar (STACK *s,char *token) {
@@ -243,12 +254,8 @@ int copia (STACK *s,char *token) {
 }
 
 
-
-//////////////////////////////////////////////////////////
-// prototipos ////////////////////////////////////////////
-// Outros Guioes    //////////////////////////////////////
-//////////////////////////////////////////////////////////
-
+// Prototipos ------------------------------------------- //
+// Outros guiões ---------------------------------------- //
 
 int ler (STACK *s,char *token) {
     if(strcmp(token, "l") == 0) {

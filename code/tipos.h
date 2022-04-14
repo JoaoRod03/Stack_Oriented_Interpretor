@@ -1,13 +1,20 @@
+/**
+* @file tipos.h
+* Contém o struct stack e inicializa as funções
+*/
+
 #ifndef TIPOS_H
 #define TIPOS_H
 
 // Configs
-#define STACK_SIZE 1000
+#define STACK_SIZE 1000 ///< Constante que define o tamanho da stack
 
 // Tipos
+
+/// Struct da stack
 typedef struct stack {
-    int pilha [STACK_SIZE];
-    int topo;
+    int pilha [STACK_SIZE]; 
+    int topo; 
 } STACK;
 
 // Iniciar funções

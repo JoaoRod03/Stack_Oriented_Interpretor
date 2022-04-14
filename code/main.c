@@ -1,3 +1,20 @@
+/*! \mainpage Pagina Inicial
+ *
+ * \section intro_sec Projeto LI2 (stack)
+ *
+ * \subsection 1 Ficheiros:
+ *
+ * \include <main.c>
+ * \include <funcoes.c>
+ * \include <tipos.h>
+ */
+
+/**
+* @file main.c
+* Contém a função main e importa os restantes modulos.
+*/
+
+
 // Bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
