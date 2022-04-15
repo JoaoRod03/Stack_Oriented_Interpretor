@@ -106,8 +106,8 @@ int resto (STACK *s,char *token) {
 /// Calcula o resultado de elevar um elemento da stack a outro, coloca o resultado no topo da stack.
 int expo (STACK *s,char *token) {
     if(strcmp(token, "#") == 0) {
-        int A = pop(s);
         int B = pop(s);
+        int A = pop(s);
         push(s, pow(A,B));
         return 1;
     }
