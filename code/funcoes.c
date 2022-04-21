@@ -15,15 +15,19 @@ STACK* nova() {
     return ((STACK *) malloc(sizeof(STACK)));
 }
 
+
+
+
+
 /// Função que insere um elemento x no topo da stack.
 void push(STACK *s,int x) {
     s->topo++ ;
-    s->pilha[s->topo] = x;
+    s->pilha.i[s->topo] = x;
 }
 
 /// Função que retira o elemento que se encontra no topo da stack.
 int pop(STACK *s) {
-    int v = s->pilha[s->topo];
+    int v = s->pilha.i[s->topo];
     s->topo--;
     return v ;
 }
@@ -33,10 +37,24 @@ int pop(STACK *s) {
 *   @param [in] Token
 */ 
 void handle (STACK *s,char *token){
-    if (soma (s,token) || menos (s,token) || mul (s,token) ||
-    incrementa (s,token) || decrementa (s,token) ||
-    divide (s,token) || resto (s,token)|| expo (s,token) ||
-    logica_and(s,token) || logica_or(s,token) || logica_xor(s,token) || logica_not(s,token) ||
+    if 
+    (soma (s,token) || 
+    menos (s,token) || 
+    mul (s,token) ||
+    incrementa (s,token) || 
+    decrementa (s,token) ||
+    divide (s,token) || 
+    resto (s,token)|| 
+    expo (s,token) ||
+    logica_and(s,token) || 
+    logica_or(s,token) || 
+    logica_xor(s,token) || 
+    logica_not(s,token) ||
+    duplicar (s,token) || 
+    pop_elem (s,token) ||
+    trocar (s,token) ||
+    rodar (s,token) ||
+    copia (s, token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
@@ -196,31 +214,35 @@ int logica_not (STACK *s,char *token) {
 // Prototipos ------------------------------------------- //
 // GUIAO 2    ------------------------------------------- //
 
-/*
+/// Duplica o elemento no topo da Stack 
+
 int duplicar (STACK *s,char *token) {
     if(strcmp(token, "_") == 0) {
-        pop(s);
         int B = pop(s);
-        push(s, A);
-        push(s, A);
+        push(s, B);
+        push(s, B);
         return 1;
     }
     return 0;
 }
 
+/// Roda os 3 elementos no topo da stack
+
 int rodar (STACK *s,char *token) {
     if(strcmp(token, "@") == 0) {
-        int A = pop(s);
-        int B = pop(s);
         int C = pop(s);
+        int B = pop(s);
+        int O = pop(s);
         
         push(s, B);
         push(s, C);
-        push(s, A);
+        push(s, O);
         return 1;
     }
     return 0;
 }
+
+/// Dá Pop no topo da Stack
 
 int pop_elem (STACK *s,char *token) {
     if(strcmp(token, ";") == 0) {
@@ -230,21 +252,40 @@ int pop_elem (STACK *s,char *token) {
     return 0;
 }
 
+
+/// Troca os dois elementos do topo da stack
+
+int trocar (STACK *s,char *token) {
+    if(strcmp(token, "\\") == 0) {
+        int A = pop (s);
+        int B = pop (s);
+        
+        push (s , A) ;
+        push (s , B) ;
+        return 1;
+    }
+    return 0;
+}
+
+
+///  Copia n-ésimo elemento para o topo da stack
+
 int copia (STACK *s,char *token) {
     if(strcmp(token, "$") == 0) {
         int w,ultimo;
-        int num = pop(s);
+        int num = pop(s); // tira e guarda o indice
         int arr[BUFSIZ];
         
         if (num>0) {
-            for (w=0; w<num-1; w++) { // copia tudo na stack até num para um array
+            for (w=0; w<=num-1; w++) { // copia tudo na stack até num para um array
                 arr[w]= pop(s);
             }
 
-            ultimo=pop(s); 
+            ultimo=pop(s);
+            push (s, ultimo) ; 
 
-            for (w=0; w<num-1; w++) { // passa tudo do array para a stack
-                push (s,arr[w]);
+            for (w = num - 1  ; w >= 0 ; w-- ) { // passa tudo do array para a stack
+                push (s , arr[w]);
             }
 
             push(s,ultimo);
@@ -256,9 +297,10 @@ int copia (STACK *s,char *token) {
 }
 
 
+
 // Prototipos ------------------------------------------- //
 // Outros guiões ---------------------------------------- //
-
+/*
 int ler (STACK *s,char *token) {
     if(strcmp(token, "l") == 0) {
         STACK *s = nova2();
@@ -267,6 +309,4 @@ int ler (STACK *s,char *token) {
     }
     return 0;
 }
-
-
 */
