@@ -16,7 +16,7 @@ union uniao {
     float f ;
     char a ;
     char str[20] ; 
-    } data ;
+    }  ;
 
 
 // Tipos
