@@ -9,11 +9,21 @@
 // Configs
 #define STACK_SIZE 1000 ///< Constante que define o tamanho da stack
 
+/// Função para aceitar qualquer tipo de Data 
+
+union uniao {
+    int i ;
+    float f ;
+    char a ;
+    char str[20] ; 
+    } data ;
+
+
 // Tipos
 
 /// Struct que define a stack
 typedef struct stack {
-    int pilha [STACK_SIZE]; 
+    union uniao pilha [STACK_SIZE]; 
     int topo; 
 } STACK;
 
@@ -36,5 +46,10 @@ int logica_and(STACK *s,char *token);
 int logica_or(STACK *s,char *token);
 int logica_xor(STACK *s,char *token);
 int logica_not(STACK *s,char *token);
+int duplicar(STACK *s,char *token);
+int rodar (STACK *s,char *token);
+int pop_elem (STACK *s,char *token);
+int trocar (STACK *s,char *token);
+int copia (STACK *s,char *token);
 
 #endif // TIPOS_H
