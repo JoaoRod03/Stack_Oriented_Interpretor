@@ -35,13 +35,10 @@ int main() {
         handle(s,token);
 
         for (int i=1; i<=(s->topo); i++){
-            printf("TIPO: %d |",(s->pilha[i].tipo));
-            printf("valor: %ld |",(s->pilha[i].l));
-            printf("valor: %lf |",(s->pilha[i].d));
             if (s->pilha[i].tipo==0) {
-                printf("%ld",s->pilha[i].l);
+                printf("%ld",s->pilha[i].val.l);
             } else {
-                printf("%g",s->pilha[i].d);
+                printf("%g",s->pilha[i].val.d);
             }
         }
         printf("\n");

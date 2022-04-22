@@ -9,20 +9,33 @@
 // Configs
 #define STACK_SIZE 1000 ///< Constante que define o tamanho da stack
 
-/// Função que fornece varios tipos á stack
-union uniao {
-    int tipo;
+////////////////////////////////////////////////
+
+typedef enum {
+    tLong,      // Valor 0
+    tDouble,    // Valor 1
+    tChar,      // Valor 2
+    tStr        // Valor 3
+} Enum_tipo;
+
+typedef union un {
     long l;
     double d;
     char c;
     char s[BUFSIZ]; 
-};
+} Uniao_tipos;
 
-/// Struct que define a stack
+typedef struct ru {
+    Enum_tipo tipo;
+    Uniao_tipos val;
+} reuniao;
+
 typedef struct stack {
-    union uniao pilha [STACK_SIZE]; 
+    reuniao pilha [STACK_SIZE]; 
     int topo; 
 } STACK;
+
+////////////////////////////////////////////////
 
 // Iniciar funções
 STACK* nova();
@@ -50,5 +63,6 @@ int rodar (STACK *s,char *token);
 int pop_elem (STACK *s,char *token);
 int trocar (STACK *s,char *token);
 int copia (STACK *s,char *token);
+int conv_int (STACK *s,char *token);
 
 #endif // TIPOS_H

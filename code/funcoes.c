@@ -19,39 +19,39 @@ STACK* nova() {
 void push(STACK *s,int x) {
     s->topo++;
     s->pilha[s->topo].tipo=0;  // Indica que é int
-    s->pilha[s->topo].l=x;  // Push para o campo int
+    s->pilha[s->topo].val.l=x;  // Push para o campo int
 }
 
 /// Função que insere um elemento x no topo da stack. (PUSH de doubles)
 void push_double(STACK *s,double x) {
     s->topo++;
-    s->pilha[s->topo]->tipo=1;   // Indica que é double
-    s->pilha[s->topo]->t.d=x;  // Push para o campo double
+    s->pilha[s->topo].tipo=1;   // Indica que é double
+    s->pilha[s->topo].val.d=x;  // Push para o campo double
 }
 
 /// Função que insere um elemento x no topo da stack. (PUSH de chars)
 void push_char(STACK *s ,char x) {
     s->topo++;
     s->pilha[s->topo].tipo=2;  // Indica que é char
-    s->pilha[s->topo].c=x;
+    s->pilha[s->topo].val.c=x;
 }
 
 /// Função que retira o elemento que se encontra no topo da stack. (Indentifica primeiro o tipo do elemento)
 int pop(STACK *s) {
     if (s->pilha[s->topo].tipo == 0) { 
-        long v = s->pilha[s->topo].l;
+        long v = s->pilha[s->topo].val.l;
         s->topo--;
         return v ; 
     }
 
     if (s->pilha[s->topo].tipo == 1) { 
-        double v = s->pilha[s->topo].d;
+        double v = s->pilha[s->topo].val.d;
         s->topo--;
         return v ;
     }
     
     if (s->pilha[s->topo].tipo == 2) { 
-        char v = s->pilha[s->topo].c;
+        char v = s->pilha[s->topo].val.c;
         s->topo--;
         return v ;
     }
@@ -82,6 +82,7 @@ void handle (STACK *s,char *token){
     trocar (s,token) ||
     rodar (s,token) ||
     copia (s, token) ||
+    conv_int (s, token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
@@ -97,10 +98,8 @@ int num (STACK *s,char *token) {
     
     if (val2-aux==0) {
         push(s,val);
-        printf("int ");
     } else {
         push_double (s,val2);
-        printf("double");
     }
 
     return 1 ;
@@ -328,7 +327,6 @@ int copia (STACK *s,char *token) {
     return 0;
 }
 
-
 /// Converte o topo da stack para int
 int conv_int (STACK *s,char *token) {
     if(strcmp(token, "i") == 0) {
@@ -347,6 +345,8 @@ int conv_int (STACK *s,char *token) {
     }
     return 0;
 }
+
+
 
 // Prototipos ------------------------------------------- //
 // Outros guiões ---------------------------------------- //
