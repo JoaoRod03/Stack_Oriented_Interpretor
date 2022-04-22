@@ -9,20 +9,14 @@
 // Configs
 #define STACK_SIZE 1000 ///< Constante que define o tamanho da stack
 
-/// Função para aceitar qualquer tipo de Data 
-
+/// Função que fornece varios tipos á stack
 union uniao {
-    long l ;
-    double d ;
-    char c ;
-    char s[20] ; 
-    int pos ;
-    }  ;
-
-
-
-
-// Tipos
+    int tipo;
+    long l;
+    double d;
+    char c;
+    char s[BUFSIZ]; 
+};
 
 /// Struct que define a stack
 typedef struct stack {
@@ -33,6 +27,8 @@ typedef struct stack {
 // Iniciar funções
 STACK* nova();
 void push(STACK *s,int x);
+void push_double(STACK *s,double x);
+void push_char(STACK *s,char x);
 int pop(STACK *s);
 void handle(STACK *s,char *token);
 int soma(STACK *s,char *token);
