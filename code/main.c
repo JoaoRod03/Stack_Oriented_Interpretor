@@ -34,8 +34,12 @@ int main() {
         }
         handle(s,token);
 
-        for (int i =1; i <= (s->topo);i++){
-            printf("%ld",s->pilha[i].l);
+        for (int i=1; i<=(s->topo); i++){
+            if (s->pilha[i].tipo==0) {
+                printf("%ld",s->pilha[i].val.l);
+            } else {
+                printf("%g",s->pilha[i].val.d);
+            }
         }
         printf("\n");
     }

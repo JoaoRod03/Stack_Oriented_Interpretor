@@ -15,46 +15,48 @@ STACK* nova() {
     return ((STACK *) malloc(sizeof(STACK)));
 }
 
-
-
-
-
-/// Função que insere um elemento x no topo da stack.
+/// Função que insere um elemento x no topo da stack. (PUSH de ints)
 void push(STACK *s,int x) {
-    s->topo++ ;
-    s -> pilha[s -> topo].pos == 1 ;
-    s->pilha[s->topo].l = x ;
-    
+    s->topo++;
+    s->pilha[s->topo].tipo = tLong;  // Indica que é long
+    s->pilha[s->topo].val.l=x;  // Push para o campo int
 }
 
-void push_double(STACK *s , double x) {
-    s->topo++ ;
-    s -> pilha[s -> topo].pos == 2 ;
-    s->pilha[s->topo].d = x ;
+/// Função que insere um elemento x no topo da stack. (PUSH de doubles)
+void push_double(STACK *s,double x) {
+    s->topo++;
+    s->pilha[s->topo].tipo = tDouble;   // Indica que é double
+    s->pilha[s->topo].val.d=x;  // Push para o campo double
 }
 
+/// Função que insere um elemento x no topo da stack. (PUSH de chars)
 void push_char(STACK *s ,char x) {
-    s->topo++ ;
-    s -> pilha[s -> topo].pos == 3 ;
-    s->pilha[s->topo].c = x ;
+    s->topo++;
+    s->pilha[s->topo].tipo = tChar;  // Indica que é char
+    s->pilha[s->topo].val.c=x;
 }
 
-/// Função que retira o elemento que se encontra no topo da stack.
+/// Função que retira o elemento que se encontra no topo da stack. (Indentifica primeiro o tipo do elemento)
 int pop(STACK *s) {
-    if (s->pilha[s->topo].pos == 1) { 
-    long v = s->pilha[s->topo].l ;
-       return v ; 
-        }
-    if (s->pilha[s->topo].pos == 2) { 
-    double v = s->pilha[s->topo].d ;
+    if (s->pilha[s->topo].tipo == 0) { 
+        long v = s->pilha[s->topo].val.l;
+        s->topo--;
+        return v ; 
+    }
+
+    if (s->pilha[s->topo].tipo == 1) { 
+        double v = s->pilha[s->topo].val.d;
+        s->topo--;
         return v ;
-        }
-    if (s->pilha[s->topo].pos == 3) { 
-    char v = s->pilha[s->topo].c ;
-        return v ;
-        }
-    s->topo--;
+    }
     
+    if (s->pilha[s->topo].tipo == 2) { 
+        char v = s->pilha[s->topo].val.c;
+        s->topo--;
+        return v ;
+    }
+
+    return 0;
 }
 
 /** Função responsavel por associar um token de um operador á sua função correspondente
@@ -62,8 +64,8 @@ int pop(STACK *s) {
 *   @param [in] Token
 */ 
 void handle (STACK *s,char *token){
-    if 
-    (soma (s,token) || 
+    if (
+    soma (s,token) || 
     menos (s,token) || 
     mul (s,token) ||
     incrementa (s,token) || 
@@ -80,14 +82,26 @@ void handle (STACK *s,char *token){
     trocar (s,token) ||
     rodar (s,token) ||
     copia (s, token) ||
+    conv_int (s, token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
-/// Verifica se não há nenhum operador no input recebido/token desconhecido. 
+/// Verifica se não há nenhum operador no input recebido/token desconhecido. Trata das constantes.
 int num (STACK *s,char *token) {
-    int val;
-    sscanf(token, "%d", &val);
-    push(s, val);
+    int aux;
+    long val;
+    double val2;
+    
+    sscanf(token, "%ld", &val);
+    sscanf(token, "%lf", &val2);
+    aux = (int) val2; 
+    
+    if (val2-aux==0) {
+        push(s,val);
+    } else {
+        push_double (s,val2);
+    }
+
     return 1 ;
 }
 
@@ -235,12 +249,8 @@ int logica_not (STACK *s,char *token) {
     return 0;
 }
 
-
-// Prototipos ------------------------------------------- //
 // GUIAO 2    ------------------------------------------- //
-
 /// Duplica o elemento no topo da Stack 
-
 int duplicar (STACK *s,char *token) {
     if(strcmp(token, "_") == 0) {
         int B = pop(s);
@@ -252,7 +262,6 @@ int duplicar (STACK *s,char *token) {
 }
 
 /// Roda os 3 elementos no topo da stack
-
 int rodar (STACK *s,char *token) {
     if(strcmp(token, "@") == 0) {
         int C = pop(s);
@@ -268,7 +277,6 @@ int rodar (STACK *s,char *token) {
 }
 
 /// Dá Pop no topo da Stack
-
 int pop_elem (STACK *s,char *token) {
     if(strcmp(token, ";") == 0) {
         pop(s);
@@ -279,7 +287,6 @@ int pop_elem (STACK *s,char *token) {
 
 
 /// Troca os dois elementos do topo da stack
-
 int trocar (STACK *s,char *token) {
     if(strcmp(token, "\\") == 0) {
         int A = pop (s);
@@ -294,7 +301,6 @@ int trocar (STACK *s,char *token) {
 
 
 ///  Copia n-ésimo elemento para o topo da stack
-
 int copia (STACK *s,char *token) {
     if(strcmp(token, "$") == 0) {
         int w,ultimo;
@@ -316,6 +322,25 @@ int copia (STACK *s,char *token) {
             push(s,ultimo);
         }
 
+        return 1;
+    }
+    return 0;
+}
+
+/// Converte o topo da stack para int
+int conv_int (STACK *s,char *token) {
+    if(strcmp(token, "i") == 0) {
+        if (s->pilha[s->topo].tipo == 1) { 
+            double aux = pop(s);
+            int r = (int) aux;
+            push (s,r);
+        }
+
+        if (s->pilha[s->topo].tipo == 2) { 
+            char aux = pop(s);
+            int r = (int) aux;
+            push (s,r);
+        }
         return 1;
     }
     return 0;
