@@ -328,23 +328,96 @@ int copia (STACK *s,char *token) {
 }
 
 /// Converte o topo da stack para int
+
 int conv_int (STACK *s,char *token) {
     if(strcmp(token, "i") == 0) {
+        if (s->pilha[s->topo].tipo == 0) { 
+            long aux = pop(s);
+            int r = (int) aux;
+            push (s,r);
+        }
+        
         if (s->pilha[s->topo].tipo == 1) { 
             double aux = pop(s);
             int r = (int) aux;
             push (s,r);
         }
 
-        if (s->pilha[s->topo].tipo == 2) { 
-            char aux = pop(s);
-            int r = (int) aux;
+        return 1;
+    }
+    return 0;
+}
+
+/// Converte o topo da stack para double
+
+int conv_double (STACK *s,char *token) {
+    if(strcmp(token, "f") == 0) {
+        if (s->pilha[s->topo].tipo == 0) { 
+            long aux = pop(s);
+            double r = (double) aux;
+            push (s,r);
+        }
+
+        if (s->pilha[s->topo].tipo == 1) { 
+            double aux = pop(s);
+            double r = aux;
             push (s,r);
         }
         return 1;
     }
     return 0;
 }
+
+/// Converte o topo da stack para char
+
+int conv_char (STACK *s,char *token) {
+    if(strcmp(token, "c") == 0) {
+        if (s->pilha[s->topo].tipo == 0) { 
+            long aux = pop(s);
+            char r = aux + '0';
+            push (s,r);
+        }
+
+        if (s->pilha[s->topo].tipo == 1) { 
+            double aux = pop(s);
+            int x = (int) aux;
+            char r = x + '0' ;
+            push (s,r);
+        }
+        return 1;
+    }
+    return 0;
+}
+
+//-------------------------------------------
+//-------------------------------------------
+
+/// Converte o topo da stack para string
+/*
+int conv_string (STACK *s,char *token) {
+    if(strcmp(token, "s") == 0) {
+        if (s->pilha[s->topo].tipo == 0) { 
+            long aux = pop(s);
+            double r = (double) aux;
+            push (s,r);
+        }
+
+        if (s->pilha[s->topo].tipo == 1) { 
+            double aux = pop(s);
+            double r = aux;
+            push (s,r);
+        }
+        return 1;
+    }
+    return 0;
+}
+*/
+//---------------------------------------
+//---------------------------------------
+
+
+
+
 
 
 
