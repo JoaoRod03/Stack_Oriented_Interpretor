@@ -22,14 +22,39 @@ STACK* nova() {
 /// Função que insere um elemento x no topo da stack.
 void push(STACK *s,int x) {
     s->topo++ ;
-    s->pilha.i[s->topo] = x;
+    s -> pilha[s -> topo].pos == 1 ;
+    s->pilha[s->topo].l = x ;
+    
+}
+
+void push_double(STACK *s , double x) {
+    s->topo++ ;
+    s -> pilha[s -> topo].pos == 2 ;
+    s->pilha[s->topo].d = x ;
+}
+
+void push_char(STACK *s ,char x) {
+    s->topo++ ;
+    s -> pilha[s -> topo].pos == 3 ;
+    s->pilha[s->topo].c = x ;
 }
 
 /// Função que retira o elemento que se encontra no topo da stack.
 int pop(STACK *s) {
-    int v = s->pilha.i[s->topo];
+    if (s->pilha[s->topo].pos == 1) { 
+    long v = s->pilha[s->topo].l ;
+       return v ; 
+        }
+    if (s->pilha[s->topo].pos == 2) { 
+    double v = s->pilha[s->topo].d ;
+        return v ;
+        }
+    if (s->pilha[s->topo].pos == 3) { 
+    char v = s->pilha[s->topo].c ;
+        return v ;
+        }
     s->topo--;
-    return v ;
+    
 }
 
 /** Função responsavel por associar um token de um operador á sua função correspondente

@@ -12,11 +12,14 @@
 /// Função para aceitar qualquer tipo de Data 
 
 union uniao {
-    int i ;
-    float f ;
-    char a ;
-    char str[20] ; 
+    long l ;
+    double d ;
+    char c ;
+    char s[20] ; 
+    int pos ;
     }  ;
+
+
 
 
 // Tipos
