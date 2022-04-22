@@ -18,21 +18,21 @@ STACK* nova() {
 /// Função que insere um elemento x no topo da stack. (PUSH de ints)
 void push(STACK *s,int x) {
     s->topo++;
-    s->pilha[s->topo].tipo=0;  // Indica que é int
+    s->pilha[s->topo].tipo = tLong;  // Indica que é long
     s->pilha[s->topo].val.l=x;  // Push para o campo int
 }
 
 /// Função que insere um elemento x no topo da stack. (PUSH de doubles)
 void push_double(STACK *s,double x) {
     s->topo++;
-    s->pilha[s->topo].tipo=1;   // Indica que é double
+    s->pilha[s->topo].tipo = tDouble;   // Indica que é double
     s->pilha[s->topo].val.d=x;  // Push para o campo double
 }
 
 /// Função que insere um elemento x no topo da stack. (PUSH de chars)
 void push_char(STACK *s ,char x) {
     s->topo++;
-    s->pilha[s->topo].tipo=2;  // Indica que é char
+    s->pilha[s->topo].tipo = tChar;  // Indica que é char
     s->pilha[s->topo].val.c=x;
 }
 
