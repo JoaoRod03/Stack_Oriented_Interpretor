@@ -35,12 +35,11 @@ int main() {
         handle(s,token);
 
         for (int i=1; i<=(s->topo); i++){
-            if (s->pilha[i].tipo==0) {
-                printf("%ld",s->pilha[i].val.l);
-            } else {
-                printf("%g",s->pilha[i].val.d);
+            if (s->pilha[i].tipo == tLong) {printf("%ld",s->pilha[i].val.l);} 
+            if (s->pilha[i].tipo == tDouble) {printf("%g",s->pilha[i].val.d);} 
+            if (s->pilha[i].tipo == tChar) {printf("%c",s->pilha[i].val.c);} 
+            if (s->pilha[i].tipo == tStr) {printf("%s",s->pilha[i].val.s);} 
             }
-        }
         printf("\n");
     }
     return 0 ;
