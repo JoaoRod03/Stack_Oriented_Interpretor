@@ -39,11 +39,23 @@ typedef struct stack {
 
 // Iniciar funções
 STACK* nova();
-void push(STACK *s,int x);
+
+// PUSH'S
+void push(STACK *s,long x);
 void push_double(STACK *s,double x);
 void push_char(STACK *s,char x);
-int pop(STACK *s);
+
+// POP'S
+long pop(STACK *s);
+double pop_double(STACK *s);
+char pop_char(STACK *s);
+
+// OUTROS
 void handle(STACK *s,char *token);
+int num(STACK *s,char *token);
+int top_tipo (STACK *s);
+
+// OPERAÇÕES
 int soma(STACK *s,char *token);
 int menos(STACK *s,char *token);
 int mul(STACK *s,char *token);
@@ -52,8 +64,6 @@ int resto(STACK *s,char *token);
 int expo(STACK *s,char *token);
 int incrementa(STACK *s,char *token);
 int decrementa(STACK *s,char *token);
-int num(STACK *s,char *token);
-// long binario(); Não implementado
 int logica_and(STACK *s,char *token);
 int logica_or(STACK *s,char *token);
 int logica_xor(STACK *s,char *token);
@@ -64,5 +74,9 @@ int pop_elem (STACK *s,char *token);
 int trocar (STACK *s,char *token);
 int copia (STACK *s,char *token);
 int conv_int (STACK *s,char *token);
+int conv_double (STACK *s,char *token);
+int conv_char (STACK *s,char *token);
+int ler (STACK *s, char *token);
+// long binario(); Não implementado
 
 #endif // TIPOS_H
