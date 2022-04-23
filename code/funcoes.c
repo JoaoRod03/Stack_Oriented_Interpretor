@@ -85,6 +85,7 @@ void handle (STACK *s,char *token){
     conv_int (s, token) ||
     conv_char (s,token) ||
     conv_double (s,token) ||
+    ler (s, token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
