@@ -64,5 +64,7 @@ int pop_elem (STACK *s,char *token);
 int trocar (STACK *s,char *token);
 int copia (STACK *s,char *token);
 int conv_int (STACK *s,char *token);
+int conv_char (STACK *s,char *token);
+int conv_double (STACK *s,char *token);
 
 #endif // TIPOS_H

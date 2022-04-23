@@ -83,6 +83,8 @@ void handle (STACK *s,char *token){
     rodar (s,token) ||
     copia (s, token) ||
     conv_int (s, token) ||
+    conv_char (s,token) ||
+    conv_double (s,token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
@@ -374,8 +376,7 @@ int conv_char (STACK *s,char *token) {
     if(strcmp(token, "c") == 0) {
         if (s->pilha[s->topo].tipo == 0) { 
             long aux = pop(s);
-            int x = (int) aux ;
-            char r = (char) x ;
+            char r = (char) aux ;
             push_char (s,r);
         }
 
@@ -416,7 +417,19 @@ int conv_string (STACK *s,char *token) {
 //---------------------------------------
 //---------------------------------------
 
-
+int ler (STACK *s, char *token) {
+    char line [BUFSIZ] ; 
+    if (strcmp(token, "l") == 0) {
+        (fgets(line , BUFSIZ , stdin)) ; {
+               while (sscanf(line,"%s %[^\n]",token,line) == 2) {
+                    handle(s ,token);
+                    }
+                handle(s,token);
+        }
+        return 1;
+    }
+    return 0;
+}
 
 
 
@@ -424,13 +437,4 @@ int conv_string (STACK *s,char *token) {
 
 // Prototipos ------------------------------------------- //
 // Outros guiões ---------------------------------------- //
-/*
-int ler (STACK *s,char *token) {
-    if(strcmp(token, "l") == 0) {
-        STACK *s = nova2();
-        input(nova2); // Temos de meter o codigo do input da main numa função chamada input e que recebe a stack onde realizar as operações
-        return 1;
-    }
-    return 0;
-}
-*/
+
