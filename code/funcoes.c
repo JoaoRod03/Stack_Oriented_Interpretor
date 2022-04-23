@@ -355,13 +355,13 @@ int conv_double (STACK *s,char *token) {
         if (s->pilha[s->topo].tipo == 0) { 
             long aux = pop(s);
             double r = (double) aux;
-            push (s,r);
+            push_double (s,r);
         }
 
         if (s->pilha[s->topo].tipo == 1) { 
             double aux = pop(s);
             double r = aux;
-            push (s,r);
+            push_double (s,r);
         }
         return 1;
     }
@@ -374,15 +374,16 @@ int conv_char (STACK *s,char *token) {
     if(strcmp(token, "c") == 0) {
         if (s->pilha[s->topo].tipo == 0) { 
             long aux = pop(s);
-            char r = aux + '0';
-            push (s,r);
+            int x = (int) aux ;
+            char r = (char) x ;
+            push_char (s,r);
         }
 
         if (s->pilha[s->topo].tipo == 1) { 
             double aux = pop(s);
             int x = (int) aux;
-            char r = x + '0' ;
-            push (s,r);
+            char r = (char) x ;
+            push_char (s,r);
         }
         return 1;
     }
