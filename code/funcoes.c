@@ -593,7 +593,19 @@ int conv_string (STACK *s,char *token) {
 //---------------------------------------
 //---------------------------------------
 
-
+int ler (STACK *s, char *token) {
+    char line [BUFSIZ] ; 
+    if (strcmp(token, "l") == 0) {
+        fgets(line , BUFSIZ , stdin) ;
+        while (sscanf(line,"%s %[^\n]",token,line) == 2) {
+                handle(s ,token);
+                }
+        handle(s,token);
+        
+        return 1;
+    }
+    return 0;
+}
 
 
 
@@ -601,13 +613,4 @@ int conv_string (STACK *s,char *token) {
 
 // Prototipos ------------------------------------------- //
 // Outros guiões ---------------------------------------- //
-/*
-int ler (STACK *s,char *token) {
-    if(strcmp(token, "l") == 0) {
-        STACK *s = nova2();
-        input(nova2); // Temos de meter o codigo do input da main numa função chamada input e que recebe a stack onde realizar as operações
-        return 1;
-    }
-    return 0;
-}
-*/
+
