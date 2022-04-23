@@ -421,12 +421,12 @@ int conv_string (STACK *s,char *token) {
 int ler (STACK *s, char *token) {
     char line [BUFSIZ] ; 
     if (strcmp(token, "l") == 0) {
-        (fgets(line , BUFSIZ , stdin)) ; {
-               while (sscanf(line,"%s %[^\n]",token,line) == 2) {
-                    handle(s ,token);
-                    }
-                handle(s,token);
-        }
+        fgets(line , BUFSIZ , stdin) ;
+        while (sscanf(line,"%s %[^\n]",token,line) == 2) {
+                handle(s ,token);
+                }
+        handle(s,token);
+        
         return 1;
     }
     return 0;
