@@ -40,10 +40,12 @@ void push_char(STACK *s ,char x) {
 }
 
 /// Função que insere um elemento do tipo string no topo da stack. 
-void push_string(STACK *s ,char* x) {
+void push_string(STACK *s ,char x[]) {
     s->topo++;
     s->pilha[s->topo].tipo = tStr;   // Atribui o tipo string ao topo da stack
-    s->pilha[s->topo].val.s = x;     // Insere o elemento x no topo da stack
+    for (int i=0; x[i]!='\0'; i++) {
+        s->pilha[s->topo].val.s[i] = x[i];     // Insere o elemento x no topo da stack
+    }
 }
 
 
@@ -71,10 +73,11 @@ char pop_char(STACK *s) {
 }
 
 char* pop_string(STACK *s) {
-        char v = s->pilha[s->topo].val.s;  // Obtem a string no topo da stack 
+        char* v = s->pilha[s->topo].val.s;  // Obtem a string no topo da stack 
         s->topo--;
         return v ;
 }
+
 
 //\/\/\/\/\/\/\/\/\/\/\/|---->  OUTROS  <-----|/\/\/\/\/\/\/\/\/\/\/\/
 
@@ -105,6 +108,7 @@ void handle (STACK *s,char *token){
     conv_double (s, token) ||
     conv_char (s, token) ||
     ler (s, token) ||
+    debugger (s, token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
@@ -579,6 +583,41 @@ int ler (STACK *s, char *token) {
         if (fgets(line , BUFSIZ , stdin)) {
         while (sscanf(line,"%s %[^\n]",token,line) == 2) {
                 handle(s ,token);
+                }
+        handle(s,token);
+        }
+
+        return 1;
+    }
+    return 0;
+}
+
+
+/// Função responsavel pelo debug do programa.
+int debugger (STACK *s, char *token) {
+    char line [BUFSIZ] ; 
+    char avancar[4]="next",ver[4]="next";
+    int exec=0;
+    if (strcmp(token, "*DEBUG*") == 0) {
+        if (fgets(line , BUFSIZ , stdin)) {
+        printf("\n");
+        while (sscanf(line,"%s %[^\n]",token,line) == 2) {
+                if (strcmp(avancar,ver)!=0 ){
+                printf("Passo: %d\n",exec);
+                printf("Token: %s\n",token);
+                handle(s ,token);
+                printf ("Stack:");
+                for (int i=1; i<=(s->topo); i++){
+                    if (s->pilha[i].tipo == tLong) {printf("%ld",s->pilha[i].val.l);} 
+                    if (s->pilha[i].tipo == tDouble) {printf("%g",s->pilha[i].val.d);} 
+                    if (s->pilha[i].tipo == tChar) {printf("%c",s->pilha[i].val.c);} 
+                    if (s->pilha[i].tipo == tStr) {printf("%s",s->pilha[i].val.s);} 
+                }
+                printf("\n");
+                exec++;
+                if (scanf("%s",avancar)){}; 
+                printf("\n");
+                }
                 }
         handle(s,token);
         }

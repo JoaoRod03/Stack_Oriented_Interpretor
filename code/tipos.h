@@ -89,6 +89,7 @@ int conv_int (STACK *s,char *token);
 int conv_double (STACK *s,char *token);
 int conv_char (STACK *s,char *token);
 int ler (STACK *s, char *token);
+int debugger (STACK *s, char *token);
 // long binario(); Não implementado
 
 
