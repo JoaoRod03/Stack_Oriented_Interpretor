@@ -1,0 +1,3 @@
+/home/leo/stack-li2/cmake-build-debug/CMakeFiles/stack_li2.dir
+/home/leo/stack-li2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/leo/stack-li2/cmake-build-debug/CMakeFiles/rebuild_cache.dir

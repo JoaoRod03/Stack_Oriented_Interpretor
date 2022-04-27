@@ -61,8 +61,8 @@ char pop_char(STACK *s) {
 */ 
 void handle (STACK *s,char *token){
     if (
-    soma (s,token) || 
-    menos (s,token) || 
+    soma (s,token) ||
+    menos (s,token) ||
     mul (s,token) ||
     incrementa (s,token) || 
     decrementa (s,token) ||
@@ -82,6 +82,8 @@ void handle (STACK *s,char *token){
     conv_double (s, token) ||
     conv_char (s, token) ||
     ler (s, token) ||
+    maior (s,token) ||
+    menor (s,token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
@@ -591,26 +593,92 @@ int conv_string (STACK *s,char *token) {
 }
 */
 //---------------------------------------
-//---------------------------------------
-
-int ler (STACK *s, char *token) {
-    char line [BUFSIZ] ; 
-    if (strcmp(token, "l") == 0) {
-        fgets(line , BUFSIZ , stdin) ;
-        while (sscanf(line,"%s %[^\n]",token,line) == 2) {
-                handle(s ,token);
-                }
-        handle(s,token);
-        
-        return 1;
-    }
-    return 0;
-}
-
-
-
 
 
 // Prototipos ------------------------------------------- //
+int maior (STACK *s,char *token) {
+    if(strcmp(token, "e>") == 0) {
+        long i1=0, i2=0, t1=0;
+        double d1=0.0, d2=0.0, t2=0;
+
+        t2=topo_tipo(s);
+        if (t2==tDouble) {
+            d2=pop_double(s);} else {i2=pop(s);
+        }
+        t1=topo_tipo(s);
+        if (t1 == tDouble) {
+            d1=pop_double(s);} else {i1=pop(s);
+        }
+
+        if (t1==1 && t2==1) {
+            if (d1>d2){
+                push_double(s, d1);
+            }
+            else push_double(s, d2);
+        }
+        if (t1==0 && t2==1) {
+            if (i1>d2){
+                push(s, i1);
+            }
+            else push_double(s, d2);
+        }
+        if (t1==1 && t2==0) {
+            if (d1>i2){
+                push_double(s, d1);
+            }
+            else push(s, i2);
+        }
+        if (t1==0 && t2==0) {
+            if (i1-i2>0){
+                push(s, i1);
+            }
+            else push(s, i2);
+        }
+        return 1;
+    }
+    return 0 ;
+}
+
+int menor (STACK *s,char *token) {
+    if(strcmp(token, "e<") == 0) {
+        long i1=0, i2=0, t1=0;
+        double d1=0.0, d2=0.0, t2=0;
+
+        t2=topo_tipo(s);
+        if (t2==tDouble) {
+            d2=pop_double(s);} else {i2=pop(s);
+        }
+        t1=topo_tipo(s);
+        if (t1 == tDouble) {
+            d1=pop_double(s);} else {i1=pop(s);
+        }
+        if (t1==1 && t2==1) {
+            if (d1>d2){
+                push_double(s, d2);
+            }
+            else push_double(s, d1);
+        }
+        if (t1==0 && t2==1) {
+            if (i1>d2){
+                push(s, d2);
+            }
+            else push_double(s, i1);
+        }
+        if (t1==1 && t2==0) {
+            if (d1>i2){
+                push_double(s, i2);
+            }
+            else push(s, d1);
+        }
+        if (t1==0 && t2==0) {
+            if (i1>i2){
+                push(s, i2);
+            }
+            else push(s, i1);
+        }
+        return 1;
+    }
+    return 0 ;
+}
 // Outros guiões ---------------------------------------- //
 

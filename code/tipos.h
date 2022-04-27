@@ -77,6 +77,8 @@ int conv_int (STACK *s,char *token);
 int conv_double (STACK *s,char *token);
 int conv_char (STACK *s,char *token);
 int ler (STACK *s, char *token);
+int maior(STACK *s,char *token);
+int menor(STACK *s,char *token);
 // long binario(); Não implementado
 
 #endif // TIPOS_H
