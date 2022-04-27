@@ -12,70 +12,24 @@
 
 /// Função responsavel por alocar o espaço necessario na memoria para criar uma stack.
 STACK* nova() {
-    return ((STACK *) malloc(sizeof(STACK)));
+    return ((STACK*) malloc(sizeof(STACK)));
 }
 
 
-//\/\/\/\/\/\/\/\/\/\/\/|---->  PUSH'S  <-----|/\/\/\/\/\/\/\/\/\/\/\/
+//\/\/\/\/\/\/\/\/\/\/\/|---->  PUSH e POP  <-----|/\/\/\/\/\/\/\/\/\/\/\/
 
-/// Função que insere um elemento do tipo long no topo da stack. 
-void push(STACK *s,long x) {
-    s->topo++;
-    s->pilha[s->topo].tipo = tLong;  // Atribui o tipo long ao topo da stack
-    s->pilha[s->topo].val.l = x;     // Push para o campo long
-}
-
-/// Função que insere um elemento do tipo double no topo da stack.
-void push_double(STACK *s,double x) {
-    s->topo++;
-    s->pilha[s->topo].tipo = tDouble;   // Atribui o tipo double ao topo da stack
-    s->pilha[s->topo].val.d = x;        // Insere o elemento x no topo da stack
-}
-
-/// Função que insere um elemento do tipo char no topo da stack. 
-void push_char(STACK *s ,char x) {
-    s->topo++;
-    s->pilha[s->topo].tipo = tChar;  // Atribui o tipo char ao topo da stack
-    s->pilha[s->topo].val.c = x;     // Insere o elemento x no topo da stack
-}
-
-/// Função que insere um elemento do tipo string no topo da stack. 
-void push_string(STACK *s ,char x[]) {
-    s->topo++;
-    s->pilha[s->topo].tipo = tStr;   // Atribui o tipo string ao topo da stack
-    for (int i=0; x[i]!='\0'; i++) {
-        s->pilha[s->topo].val.s[i] = x[i];     // Insere o elemento x no topo da stack
-    }
+/// Função que insere um elemento no topo da stack. 
+void push(STACK *s, tipos x) {
+    s->topo++;                 // Aumenta o apontador para o topo da stack
+    s->pilha[s->topo] = x;     // Push para o campo long
 }
 
 
-//\/\/\/\/\/\/\/\/\/\/\/|---->  POP'S  <-----|/\/\/\/\/\/\/\/\/\/\/\/
-
-/// Função que retira o elemento do tipo long que se encontra no topo da stack.
-long pop(STACK *s) {
-        long v = s->pilha[s->topo].val.l;  // Obtem o long no topo da stack 
+/// Função que retira o elemento que se encontra no topo da stack.
+tipos pop(STACK *s) {
+        tipos v = s->pilha[s->topo];  // Obtem o elemento no topo da stack
         s->topo--;  
         return v ; 
-}
-
-/// Função que retira o elemento do tipo double que se encontra no topo da stack.
-double pop_double(STACK *s) {
-        double v = s->pilha[s->topo].val.d;  // Obtem o double no topo da stack 
-        s->topo--;
-        return v ;
-}
-
-/// Função que retira o elemento do tipo char que se encontra no topo da stack.
-char pop_char(STACK *s) {
-        char v = s->pilha[s->topo].val.c;  // Obtem o char no topo da stack 
-        s->topo--;
-        return v ;
-}
-
-char* pop_string(STACK *s) {
-        char* v = s->pilha[s->topo].val.s;  // Obtem a string no topo da stack 
-        s->topo--;
-        return v ;
 }
 
 
@@ -90,11 +44,11 @@ void handle (STACK *s,char *token){
     soma (s,token) || 
     menos (s,token) || 
     mul (s,token) ||
-    incrementa (s,token) || 
-    decrementa (s,token) ||
     divide (s,token) || 
     resto (s,token)|| 
     expo (s,token) ||
+    incrementa (s,token) || 
+    decrementa (s,token) ||
     logica_and(s,token) || 
     logica_or(s,token) || 
     logica_xor(s,token) || 
@@ -114,18 +68,23 @@ void handle (STACK *s,char *token){
 
 /// Função que trata dos tokens não reconhecidos e constantes, verifica o tipo do token e atribui uma operação.
 int num (STACK *s,char *token) {
-    long val;
-    double val2;
-    char* ptr;
+    tipos aux;
+    long l1;
+    double d1;
     
-    sscanf(token, "%ld", &val);
-    sscanf(token, "%lf", &val2);
+    char* ptr;
     strtol(token,&ptr,10);
 
     if (*ptr=='\0') {
-        push(s,val);
+        sscanf(token, "%ld", &l1);
+        aux.tipo = tLong;
+        aux.val.l = l1;
+        push(s,aux);      
     } else {
-        push_double (s,val2);
+        sscanf(token, "%lf", &d1);
+        aux.tipo = tDouble;
+        aux.val.d = d1;
+        push(s,aux);
     }
 
     return 1 ;
@@ -144,41 +103,37 @@ int topo_tipo (STACK *s) {
 /// Função que soma dois elementos da stack e coloca o resultado no topo desta.
 int soma (STACK *s,char *token) {
     if(strcmp(token, "+") == 0) {
-        long i1=0, i2=0, t1=0;
-        double d1=0.0, d2=0.0, t2=0;
+        tipos t1,t2,aux;
 
-        t2=topo_tipo(s);
-        if (t2==tDouble) {d2=pop_double(s);} else {i2=pop(s);}
+        t1 = pop(s);
+        t2 = pop(s);
         
-        t1=topo_tipo(s);
-        if (t1 == tDouble) {d1=pop_double(s);} else {i1=pop(s);}
-        
-        if (t1==1 && t2==1) {push_double(s, d1 + d2);}
-        if (t1==0 && t2==1) {push_double(s, i1 + d2);}
-        if (t1==1 && t2==0) {push_double(s, d1 + i2);}
-        if (t1==0 && t2==0) {push(s, i1 + i2);}
+        if (t1.tipo==1 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = t1.val.d + t2.val.d;}
+        if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = t1.val.l + t2.val.d;}
+        if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = t1.val.d + t2.val.l;}
+        if (t1.tipo==0 && t2.tipo==0) {aux.tipo=tLong; aux.val.l = t1.val.l + t2.val.l;}
+
+        push(s,aux);
 
         return 1;
     }
     return 0 ;
 }
 
+
 /// Função que subtrai dois elementos da stack e coloca o resultado no topo desta.
 int menos (STACK *s,char *token) {
     if(strcmp(token, "-") == 0) {
-        long i1=0, i2=0, t1=0;
-        double d1=0.0, d2=0.0, t2=0;
+        tipos t1,t2,aux;
 
-        t2=topo_tipo(s);
-        if (t2==tDouble) {d2=pop_double(s);} else {i2=pop(s);}
+        t2 = pop(s); t1 = pop(s);
         
-        t1=topo_tipo(s);
-        if (t1 == tDouble) {d1=pop_double(s);} else {i1=pop(s);}
-        
-        if (t1==1 && t2==1) {push_double(s, d1 - d2);}
-        if (t1==0 && t2==1) {push_double(s, i1 - d2);}
-        if (t1==1 && t2==0) {push_double(s, d1 - i2);}
-        if (t1==0 && t2==0) {push(s, i1 - i2);}
+        if (t1.tipo==1 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = t1.val.d - t2.val.d;}
+        if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = t1.val.l - t2.val.d;}
+        if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = t1.val.d - t2.val.l;}
+        if (t1.tipo==0 && t2.tipo==0) {aux.tipo=tLong; aux.val.l = t1.val.l - t2.val.l;}
+
+        push(s,aux);
 
         return 1;
     }
@@ -188,19 +143,17 @@ int menos (STACK *s,char *token) {
 /// Função que multiplica dois elementos da stack e coloca o resultado no topo desta.
 int mul (STACK *s,char *token) {
     if(strcmp(token, "*") == 0) {
-        long i1=0, i2=0, t1=0;
-        double d1=0.0, d2=0.0, t2=0;
+        tipos t1,t2,aux;
 
-        t2=topo_tipo(s);
-        if (t2==tDouble) {d2=pop_double(s);} else {i2=pop(s);}
+        t2 = pop(s);
+        t1 = pop(s);
         
-        t1=topo_tipo(s);
-        if (t1 == tDouble) {d1=pop_double(s);} else {i1=pop(s);}
-        
-        if (t1==1 && t2==1) {push_double(s, d1 * d2);}
-        if (t1==0 && t2==1) {push_double(s, i1 * d2);}
-        if (t1==1 && t2==0) {push_double(s, d1 * i2);}
-        if (t1==0 && t2==0) {push(s, i1 * i2);}
+        if (t1.tipo==1 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = t1.val.d * t2.val.d;}
+        if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = t1.val.l * t2.val.d;}
+        if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = t1.val.d * t2.val.l;}
+        if (t1.tipo==0 && t2.tipo==0) {aux.tipo=tLong; aux.val.l = t1.val.l * t2.val.l;}
+
+        push(s,aux);
 
         return 1;
     }
@@ -210,20 +163,18 @@ int mul (STACK *s,char *token) {
 /// Função que divide dois elementos da stack e coloca o resultado no topo desta.
 int divide (STACK *s,char *token) {
     if(strcmp(token, "/") == 0) { 
-        int i1=0, i2=0, t1=0;
-        double d1=0.0, d2=0.0, t2=0;
+        tipos t1,t2,aux;
 
-        t2=topo_tipo(s);
-        if (t2==tDouble) {d2=pop_double(s);} else {i2=pop(s);}
+        t2 = pop(s);
+        t1 = pop(s);
         
-        t1=topo_tipo(s);
-        if (t1 == tDouble) {d1=pop_double(s);} else {i1=pop(s);}
-        
-        if (t1==1 && t2==1) {push_double(s, d1 / d2);}
-        if (t1==0 && t2==1) {push_double(s, (double) i1 / d2);}
-        if (t1==1 && t2==0) {push_double(s, d1 / (double) i2);}
-        if (t1==0 && t2==0) {push (s,i1 / i2);}
-        
+        if (t1.tipo==1 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = t1.val.d / t2.val.d;}
+        if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = (double) t1.val.l / t2.val.d;}
+        if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = t1.val.d / (double) t2.val.l;}
+        if (t1.tipo==0 && t2.tipo==0) {aux.tipo=tLong; aux.val.l = t1.val.l / t2.val.l;}
+
+        push(s,aux);
+
         return 1;
     }
     return 0;
@@ -232,55 +183,57 @@ int divide (STACK *s,char *token) {
 /// Função que calcula o resto da divisao de dois elementos da stack e coloca o resultado no topo desta.
 int resto (STACK *s,char *token) {
     if(strcmp(token, "%") == 0) {
-        int A = pop(s);
-        int B = pop(s);
-        push(s, B % A);
+        tipos t1,t2,aux;
+
+        t2 = pop(s);
+        t1 = pop(s);
+        
+        if (t1.tipo==1 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = (long) t1.val.d % (long) t2.val.d;}
+        if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = t1.val.l % (long) t2.val.d;}
+        if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = (long) t1.val.d % t2.val.l;}
+        if (t1.tipo==0 && t2.tipo==0) {aux.tipo=tLong; aux.val.l = t1.val.l % t2.val.l;}
+
+        push(s,aux);
+
         return 1;
     }
     return 0;
 }
+
 
 /// Calcula o resultado de elevar um elemento da stack a outro, coloca o resultado no topo da stack.
 int expo (STACK *s,char *token) {
     if(strcmp(token, "#") == 0) {
-        int i1=0, i2=0, t1=0, t2=0;
-        double d1=0.0, d2=0.0;
+        tipos t1,t2,aux;
 
-        t2=topo_tipo(s);
-        if (t2==tDouble) {d2=pop_double(s);} else {i2=pop(s);}
+        t2 = pop(s);
+        t1 = pop(s);
         
-        t1=topo_tipo(s);
-        if (t1 == tDouble) {d1=pop_double(s);} else {i1=pop(s);}
-        
-        if (t1==1 && t2==1) {push_double(s, pow (d1,d2));}
-        if (t1==0 && t2==1) {push_double(s, pow ((double) i1,d2));}
-        if (t1==1 && t2==0) {push_double(s, pow (d1,(double) i2));}
-        if (t1==0 && t2==0) {push (s, pow(i1,i2));}
-        
+        if (t1.tipo==1 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = pow(t1.val.d, t2.val.d);}
+        if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = pow(t1.val.l, t2.val.d);}
+        if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = pow(t1.val.d, t2.val.l);}
+        if (t1.tipo==0 && t2.tipo==0) {aux.tipo=tLong; aux.val.l = pow (t1.val.l, t2.val.l);}
+
+        push(s,aux);
+
         return 1;
     }
     return 0;
 }
 
+
 /// Incrementa o valor de um elemento da stack em 1 valor.
 int incrementa (STACK *s,char *token) {
     if(strcmp(token, ")") == 0) {
-        int i1=0, t1=0;
-        double d1=0.0;
-        char c1=' ';
+        tipos t1,aux;
 
-        t1=topo_tipo(s);
-        if (t1 == tDouble) {d1=pop_double(s);}
-        else if (t1==tLong) {i1=pop(s);}
-        else if (t1==tChar) {c1=pop_char(s);}
+        t1 = pop(s);
+        
+        if (t1.tipo==tLong) {aux.tipo=tLong; aux.val.l = t1.val.l+1;}
+        if (t1.tipo==tDouble) {aux.tipo=tDouble; aux.val.d = t1.val.d+1;}
+        if (t1.tipo==tChar) {aux.tipo=tChar; aux.val.c = (char) (((int) t1.val.c)+1);}
 
-        if (t1==tLong) {push(s, i1+1);}
-        if (t1==tDouble) {push_double(s, d1+1);}
-        if (t1==tChar) {
-            int aux = (int) c1;
-            char aux2 = (char) (aux+1); 
-            push_char(s, aux2);
-        }
+        push(s,aux);
 
         return 1;
     }
@@ -290,25 +243,18 @@ int incrementa (STACK *s,char *token) {
 /// Decrementa o valor de um elemento da stack em 1 valor.
 int decrementa (STACK *s,char *token) {
     if(strcmp(token, "(") == 0) {
-        int i1=0, t1=0;
-        double d1=0.0;
-        char c1=' ';
+        tipos t1,aux;
 
-        t1=topo_tipo(s);
-        if (t1 == tDouble) {d1=pop_double(s);}
-        else if (t1==tLong) {i1=pop(s);}
-        else if (t1==tChar) {c1=pop_char(s);}
+        t1 = pop(s);
+        
+        if (t1.tipo==tLong) {aux.tipo=tLong; aux.val.l = t1.val.l-1;}
+        if (t1.tipo==tDouble) {aux.tipo=tDouble; aux.val.d = t1.val.d-1;}
+        if (t1.tipo==tChar) {aux.tipo=tChar; aux.val.c = (char) (((int) t1.val.c)-1);}
 
-        if (t1==tLong) {push(s, i1-1);}
-        if (t1==tDouble) {push_double(s, d1-1);}
-        if (t1==tChar) {
-            int aux = (int) c1;
-            char aux2 = (char) (aux-1); 
-            push_char(s, aux2);
-        }
+        push(s,aux);
 
         return 1;
-    }
+        }
     return 0 ;
 }
 
@@ -318,9 +264,10 @@ int decrementa (STACK *s,char *token) {
 /// Realiza a operação (and / &) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int logica_and (STACK *s,char *token) {
     if(strcmp(token, "&") == 0) {
-        int A = pop(s);
-        int B = pop(s);
-        push(s, B & A);
+        tipos A = pop(s);
+        tipos B = pop(s);
+        A.val.l = A.val.l & B.val.l;
+        push(s,A);
         return 1;
     }
     return 0;
@@ -329,9 +276,10 @@ int logica_and (STACK *s,char *token) {
 /// Realiza a operação (or / |) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int logica_or (STACK *s,char *token) {
     if(strcmp(token, "|") == 0) {
-        int A = pop(s);
-        int B = pop(s);
-        push(s, B | A);
+        tipos A = pop(s);
+        tipos B = pop(s);
+        A.val.l = A.val.l | B.val.l;
+        push(s,A);
         return 1;
     }
     return 0;
@@ -340,9 +288,10 @@ int logica_or (STACK *s,char *token) {
 /// Realiza a operação (xor / ^) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int logica_xor (STACK *s,char *token) {
     if(strcmp(token, "^") == 0) {
-        int A = pop(s);
-        int B = pop(s);
-        push(s, B ^ A);
+        tipos A = pop(s);
+        tipos B = pop(s);
+        A.val.l = B.val.l ^ A.val.l;
+        push(s,A);
         return 1;
     }
     return 0;
@@ -351,8 +300,9 @@ int logica_xor (STACK *s,char *token) {
 /// Realiza a operação (not / ~) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int logica_not (STACK *s,char *token) {
     if(strcmp(token, "~") == 0) {
-        int A = pop(s);
-        push(s, ~A);
+        tipos A = pop(s);
+        A.val.l = (~(A.val.l));
+        push(s,A);
         return 1;
     }
     return 0;
@@ -363,19 +313,10 @@ int logica_not (STACK *s,char *token) {
 
 /// Duplica o elemento que se encontra no topo da stack. 
 int duplicar (STACK *s,char *token) {
-    if(strcmp(token, "_") == 0) {
-        long i1=0,t1=0;
-        double d1=0.0;
-        char c1=' ';
-        
-        t1=topo_tipo(s);
-        if (t1 == tDouble) {d1=pop_double(s);}
-        if (t1 == tLong) {i1=pop(s);}
-        if (t1 == tChar) {c1=pop_char(s);}
-        
-        if (t1==tChar) {push_char(s, c1); push_char(s, c1);}
-        if (t1==tDouble) {push_double(s, d1); push_double(s, d1);}
-        if (t1==tLong) {push(s, i1); push(s, i1);}
+    if(strcmp(token, "_") == 0) {  
+        tipos t1 = pop(s);
+        push(s,t1);
+        push(s,t1);
 
         return 1;
     }
@@ -385,44 +326,13 @@ int duplicar (STACK *s,char *token) {
 /// Roda os 3 elementos no topo da stack (123 -> 231).
 int rodar (STACK *s,char *token) {
     if(strcmp(token, "@") == 0) {
-        int i1=0, i2=0, i3=0, t1=0, t2=0, t3=0;
-        double d1=0.0, d2=0.0, d3=0;
-        char c1=' ',c2=' ',c3=' ';
+        tipos t3 = pop(s);
+        tipos t2 = pop(s);
+        tipos t1 = pop(s);
 
-        // Retira C
-        t3=topo_tipo(s);
-        if (t3==tDouble) {d3=pop_double(s);}
-        else if (t3==tLong) {i3=pop(s);}
-        else if (t3==tChar) {c3=pop_char(s);}
-
-        // Retira B
-        t2=topo_tipo(s);
-        if (t2==tDouble) {d2=pop_double(s);}
-        else if (t2==tLong) {i2=pop(s);}
-        else if (t2==tChar) {c2=pop_char(s);}
-
-        // Retira A
-        t1=topo_tipo(s);
-        if (t1 == tDouble) {d1=pop_double(s);}
-        else if (t1==tLong) {i1=pop(s);}
-        else if (t1==tChar) {c1=pop_char(s);}
-
-        /////////////////////////////////////////////
-
-        // Adiciona B
-        if (t2==tLong) {push(s,i2);}
-        if (t2==tDouble) {push_double(s, d2);}
-        if (t2==tChar) {push_char(s, c2);}
-
-        // Adiciona C
-        if (t3==tLong) {push(s,i3);}
-        if (t3==tDouble) {push_double(s, d3);}
-        if (t3==tChar) {push_char(s, c3);}
-
-        // Adiciona A
-        if (t1==tLong) {push(s,i1);}
-        if (t1==tDouble) {push_double(s, d1);}
-        if (t1==tChar) {push_char(s, c1);}
+        push (s,t2);
+        push (s,t3);
+        push (s,t1);
 
         return 1;
     }
@@ -432,9 +342,7 @@ int rodar (STACK *s,char *token) {
 /// Retira o elemento que se encontra no topo da stack.
 int pop_elem (STACK *s,char *token) {
     if(strcmp(token, ";") == 0) {
-        int t1;
-        t1=topo_tipo(s);
-        if (t1 == tDouble) {pop_double(s);} else {pop(s);}
+        pop(s);
         return 1;
     }
     return 0;
@@ -443,33 +351,11 @@ int pop_elem (STACK *s,char *token) {
 /// Troca os dois elementos do topo da stack
 int trocar (STACK *s,char *token) {
     if(strcmp(token, "\\") == 0) {
-        long i1=0, i2=0, t1=0, t2=0;
-        double d1=0.0, d2=0.0;
-        char c1=' ', c2=' ';
-
-        // Retira A
-        t1=topo_tipo(s); 
-        if (t1 == tDouble) {d1=pop_double(s);}
-        else if (t1==tLong) {i1=pop(s);}
-        else if (t1==tChar) {c1=pop_char(s);}
-
-        // Retira B
-        t2=topo_tipo(s); 
-        if (t2==tDouble) {d2=pop_double(s);}
-        else if (t2==tLong) {i2=pop(s);}
-        else if (t2==tChar) {c2=pop_char(s);}
-
-        /////////////////////////////////////////////
-
-        // Adiciona A
-        if (t1==tLong) {push(s,i1);}
-        if (t1==tDouble) {push_double(s, d1);}
-        if (t1==tChar) {push_char(s, c1);}
-
-        // Adiciona B
-        if (t2==tLong) {push(s,i2);}
-        if (t2==tDouble) {push_double(s, d2);}
-        if (t2==tChar) {push_char(s, c2);}
+        tipos t2 = pop(s);
+        tipos t1 = pop(s);
+        
+        push(s,t2);
+        push(s,t1);
 
         return 1;
     }
@@ -479,25 +365,28 @@ int trocar (STACK *s,char *token) {
 ///  Copia n-ésimo elemento para o topo da stack. (n $)
 int copia (STACK *s,char *token) {
     if(strcmp(token, "$") == 0) {
-        int w,ultimo;
-        int num = pop(s); // tira e guarda o indice
-        int arr[BUFSIZ];
-        
-        if (num>=0) {
-            for (w=0; w<=num-1; w++) { // copia tudo na stack até num para um array
-                arr[w]= pop(s);
+        int w;
+        tipos ultimo;
+        tipos* arr = malloc(BUFSIZ*sizeof(tipos));
+        tipos num=pop(s);
+
+        if (num.val.l>=0) {
+            for (w=0; w<=(num.val.l-1); w++) { // copia tudo na stack até num para um array
+                arr[w]=pop(s);
             }
 
             ultimo=pop(s);
-            push (s, ultimo) ; 
+            push (s,ultimo); 
 
-            for (w = num - 1  ; w >= 0 ; w-- ) { // passa tudo do array para a stack
-                push (s , arr[w]);
+            for (w = (num.val.l)-1; w>= 0; w--) { // passa tudo do array para a stack
+                push (s, arr[w]);
             }
 
             push(s,ultimo);
+            
         }
-
+        
+        free (arr);
         return 1;
     }
     return 0;
@@ -509,23 +398,14 @@ int copia (STACK *s,char *token) {
 /// Converte o topo da stack para int.
 int conv_int (STACK *s,char *token) {
     if (strcmp(token, "i") == 0) {
-        if (topo_tipo(s) == tLong) { 
-            long aux = pop(s);
-            int r = (int) aux;
-            push (s,r);
-        }
-        
-        if (topo_tipo(s) == tDouble) { 
-            double aux = pop_double(s);
-            int r = (int) aux;
-            push (s,r);
-        }
+        tipos t1,aux;
+        aux.tipo=tLong;
 
-        if (topo_tipo(s) == tChar) { 
-            char aux = pop_char(s);
-            int r = (int) aux;
-            push (s,r);
-        }
+        t1 = pop(s);
+        
+        if (t1.tipo==tLong) {push(s,t1);}
+        if (t1.tipo==tDouble) {aux.val.l = (int) t1.val.d; push(s,aux);}
+        if (t1.tipo==tChar) {aux.val.l = (int) t1.val.c; push(s,aux);}
 
         return 1;
     }
@@ -535,16 +415,14 @@ int conv_int (STACK *s,char *token) {
 /// Converte o topo da stack para double.
 int conv_double (STACK *s,char *token) {
     if (strcmp(token, "f") == 0) {
-        if (topo_tipo(s) == tLong) { 
-            long aux = pop(s);
-            double r = (double) aux;
-            push_double (s,r);
-        }
+        tipos t1,aux;
+        aux.tipo=tDouble;
 
-        if (topo_tipo(s) == tDouble) { 
-            double aux = pop_double(s);
-            push_double (s,aux);
-        }
+        t1 = pop(s);
+
+        if (t1.tipo==tDouble) {push(s,t1);}
+        if (t1.tipo==tLong) {aux.val.d = (double) t1.val.l; push(s,aux);}
+        if (t1.tipo==tChar) {aux.val.d = (double) ((int) t1.val.l); push(s,aux);}
 
         return 1;
     }
@@ -554,19 +432,14 @@ int conv_double (STACK *s,char *token) {
 /// Converte o topo da stack para char.
 int conv_char (STACK *s,char *token) {
     if (strcmp(token, "c") == 0) {
-        if (topo_tipo(s) == tLong) { 
-            long aux = pop(s);
-            int x = (int) aux;
-            char r = (char) x;
-            push_char (s,r);
-        }
+        tipos t1,aux;
+        aux.tipo=tChar;
 
-        if (topo_tipo(s) == tDouble) { 
-            double aux = pop_double(s);
-            int x = (int) aux;
-            char r = (char) x;
-            push_char (s,r);
-        }
+        t1 = pop(s);
+
+        if (t1.tipo==tChar) {push(s,t1);}
+        if (t1.tipo==tLong) {aux.val.c = (char) t1.val.l; push(s,aux);}
+        if (t1.tipo==tDouble) {aux.val.c = (char) ((int) t1.val.d); push(s,aux);}
 
         return 1;
     }
@@ -593,33 +466,60 @@ int ler (STACK *s, char *token) {
 }
 
 
-/// Função responsavel pelo debug do programa.
+/// Função responsavel pelo debug do programa. Escrever DEBUG e depois inserir o input para realizar o debug.
 int debugger (STACK *s, char *token) {
     char line [BUFSIZ] ; 
     char avancar[4]="next",ver[4]="next";
     int exec=0;
-    if (strcmp(token, "*DEBUG*") == 0) {
+    if (strcmp(token, "DEBUG") == 0) {
         if (fgets(line , BUFSIZ , stdin)) {
         printf("\n");
         while (sscanf(line,"%s %[^\n]",token,line) == 2) {
                 if (strcmp(avancar,ver)!=0 ){
-                printf("Passo: %d\n",exec);
-                printf("Token: %s\n",token);
-                handle(s ,token);
-                printf ("Stack:");
-                for (int i=1; i<=(s->topo); i++){
-                    if (s->pilha[i].tipo == tLong) {printf("%ld",s->pilha[i].val.l);} 
-                    if (s->pilha[i].tipo == tDouble) {printf("%g",s->pilha[i].val.d);} 
-                    if (s->pilha[i].tipo == tChar) {printf("%c",s->pilha[i].val.c);} 
-                    if (s->pilha[i].tipo == tStr) {printf("%s",s->pilha[i].val.s);} 
+                    printf("Passo: %d\n",exec);
+                    printf("Token: %s\n",token);
+                    handle(s ,token);
+                    printf ("Stack:");
+                    for (int i=1; i<=(s->topo); i++){
+                        if (s->pilha[i].tipo == tLong) {printf("%ld",s->pilha[i].val.l);} 
+                        if (s->pilha[i].tipo == tDouble) {printf("%g",s->pilha[i].val.d);} 
+                        if (s->pilha[i].tipo == tChar) {printf("%c",s->pilha[i].val.c);} 
+                        if (s->pilha[i].tipo == tStr) {printf("%s",s->pilha[i].val.s);} 
+                    }
+                    printf("\n");
+                    exec++;
+                    if (scanf("%s",avancar)){}; 
+                    printf("\n");
                 }
-                printf("\n");
-                exec++;
-                if (scanf("%s",avancar)){}; 
-                printf("\n");
-                }
-                }
+            }
         handle(s,token);
+        }
+
+        return 1;
+    }
+    return 0;
+}
+
+//\/\/\/\/\/\/\/\/\/\/\/|---->  Logica  <-----|/\/\/\/\/\/\/\/\/\/\/\/
+
+/// Função que lê input e insere o resultado desse input na stack.
+int ifThenElse (STACK *s, char *token) {
+    if (strcmp(token, "?") == 0) {
+        tipos t1,t2,t3;
+        int c1=0;
+        double d1=0;
+
+        t3 = pop(s);
+        t2 = pop(s);
+        t1 = pop(s);
+
+        if (t1.tipo==tLong) {c1=t1.val.l;} 
+        if (t1.tipo==tDouble) {d1=t1.val.d;} 
+
+        if (c1!=0 || d1!=0) {
+            push(s,t2);
+        } else {
+            push(s,t3);
         }
 
         return 1;
