@@ -87,3 +87,4 @@ int debugger (STACK *s, char *token); /// Função responsavel pelo debug do pro
 // long binario(); Não implementado
 
 #endif // TIPOS_H
+
