@@ -36,7 +36,8 @@ typedef struct ru {
 /// Struct da stack, constituido por um array que armazena os valores da stack e um apontador para o topo desta.
 typedef struct stack {
     tipos pilha [STACK_SIZE]; 
-    int topo; 
+    int topo;
+    tipos var [30];
 } STACK;
 
 /////////////////// INICIALIZAÇÃO DE FUNÇÕES ///////////////////
@@ -53,6 +54,8 @@ tipos pop (STACK *s); /// Função que retira o elemento que se encontra no topo
 void handle (STACK *s,char *token); // Função responsavel por associar um token de um operador á sua função correspondente.
 int num (STACK *s,char *token); /// Função que trata dos tokens não reconhecidos e constantes, verifica o tipo do token e atribui uma operação.
 int top_tipo (STACK *s); /// Devolve o tipo do topo da stack
+int vars (STACK *s ,char *token);
+int vars2p (STACK *s ,char *token);
 
 
 // OPERAÇÕES
@@ -83,8 +86,17 @@ int conv_int (STACK *s,char *token); /// Converte o topo da stack para int.
 int conv_double (STACK *s,char *token); /// Converte o topo da stack para double.
 int conv_char (STACK *s,char *token); /// Converte o topo da stack para char.
 int ler (STACK *s, char *token); /// Função que lê input e insere o resultado desse input na stack.
-int debugger (STACK *s, char *token); /// Função responsavel pelo debug do programa.
-// long binario(); Não implementado
+int debugger (STACK *s, char *token);/// Função responsavel pelo debug do programa.
+int mai (STACK *s, char *token);
+int men (STACK *s, char *token);
+int interroga(STACK *s, char *token);
+int igual (STACK *s, char *token);
+int nao(STACK *s, char *token);
+int maior(STACK *s, char *token);
+int menor(STACK *s, char *token);
+int conjuncao(STACK *s, char *token);
+int disjuncao(STACK *s, char *token);
+
 
 #endif // TIPOS_H
 

@@ -8,15 +8,35 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <ctype.h>
 #include "tipos.h"
 
 /// Função responsavel por alocar o espaço necessario na memoria para criar uma stack.
 STACK* nova() {
-    return ((STACK*) malloc(sizeof(STACK)));
+    STACK* s;
+    s=((STACK*) malloc(sizeof(STACK)));
+    s->var[0].tipo= s->var[1].tipo= s->var[2].tipo= s->var[3].tipo= s->var[4].tipo= s->var[5].tipo = tLong;
+    s->var[23].tipo= s->var[24].tipo= s->var[25].tipo = tLong;
+    s->var[0].val.l=10;
+    s->var[1].val.l=11;
+    s->var[2].val.l=12;
+    s->var[3].val.l=13;
+    s->var[4].val.l=14;
+    s->var[5].val.l=15;
+    s->var[23].val.l=0;
+    s->var[24].val.l=1;
+    s->var[25].val.l=2;
+
+    s->var[13].tipo = s->var[18].tipo = tChar;
+    s->var[13].val.c='\n';
+    s->var[18].val.c= ' ';
+
+
+    return s ;
 }
 
 
-//\/\/\/\/\/\/\/\/\/\/\/|---->  PUSH e POP  <-----|/\/\/\/\/\/\/\/\/\/\/\/
+// |\/\/\/\/\/\/\/\/\/\/\/|---->  PUSH e POP  <-----|/\/\/\/\/\/\/\/\/\/\/\/
 
 /// Função que insere um elemento no topo da stack. 
 void push(STACK *s, tipos x) {
@@ -63,6 +83,17 @@ void handle (STACK *s,char *token){
     conv_char (s, token) ||
     ler (s, token) ||
     debugger (s, token) ||
+    mai (s, token) ||
+    men (s, token) ||
+    interroga (s, token) ||
+    igual (s, token) ||
+    nao (s, token) ||
+    maior (s, token) ||
+    menor (s, token) ||
+    conjuncao (s, token) ||
+    disjuncao (s, token) ||
+    vars (s, token) ||
+    vars2p (s, token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
@@ -71,7 +102,7 @@ int num (STACK *s,char *token) {
     tipos aux;
     long l1;
     double d1;
-    
+
     char* ptr;
     strtol(token,&ptr,10);
 
@@ -503,7 +534,7 @@ int debugger (STACK *s, char *token) {
 //\/\/\/\/\/\/\/\/\/\/\/|---->  Logica  <-----|/\/\/\/\/\/\/\/\/\/\/\/
 
 /// Função que lê input e insere o resultado desse input na stack.
-int ifThenElse (STACK *s, char *token) {
+int interroga (STACK *s, char *token) {
     if (strcmp(token, "?") == 0) {
         tipos t1,t2,t3;
         int c1=0;
@@ -547,16 +578,170 @@ int conv_string (STACK *s,char *token) {
     return 0;
 }
 
-// NAO UTILIZADO: Transforma um numero decimal em um numero binario
-long binario (int x) {
-	long r=0;
-    int i=0,resto=0;
-	while (x>=1) {
-		resto=x%2;
-		r=r+(resto*pow(10,i));
-		x=(x-resto)/2;
-		i++;
-	}
-	return r;
-} 
+
+
+
 */
+int mai(STACK *s,char *token) {
+    if(strcmp(token, ">") == 0) {
+        tipos t1,t2,aux;
+        t2 = pop(s);
+        t1 = pop(s);
+
+        aux.tipo=tLong;
+        double v1=0,v2=0;
+        if(t1.tipo==tLong){v1=(double)t1.val.l;} else{v1=t1.val.d;}
+        if(t2.tipo==tLong){v2=(double)t2.val.l;} else{v2=t2.val.d;}
+
+        if(v1>v2){aux.val.l=1;}else aux.val.l=0;
+        push(s,aux);
+        return 1;
+    }
+    return 0 ;
+}
+/// Se um valor for maior que o outro ira devolver 1 senão irá devolver 0
+int men(STACK *s,char *token) {
+    if(strcmp(token, "<") == 0) {
+        tipos t1,t2,aux;
+        t2 = pop(s);
+        t1 = pop(s);
+        aux.tipo=tLong;
+        double v1=0,v2=0;
+        if(t1.tipo==tLong){v1=(double)t1.val.l;} else{v1=t1.val.d;}
+        if(t2.tipo==tLong){v2=(double)t2.val.l;} else{v2=t2.val.d;}
+
+        if(v1<v2){aux.val.l=1;}else aux.val.l=0;
+        push(s,aux);
+        return 1;
+    }
+    return 0 ;
+}
+int igual(STACK *s,char *token) {
+    if(strcmp(token, "=") == 0) {
+        tipos t1,t2,aux;
+        t2 = pop(s);
+        t1 = pop(s);
+        aux.tipo=tLong;
+        double v1=0,v2=0;
+        if(t1.tipo==tLong){v1=(double)t1.val.l;} else{v1=t1.val.d;}
+        if(t2.tipo==tLong){v2=(double)t2.val.l;} else{v2=t2.val.d;}
+
+        if(v1==v2){aux.val.l=1;}else aux.val.l=0;
+        push(s,aux);
+        return 1;
+    }
+    return 0 ;
+}
+int nao(STACK *s,char *token) {
+    if(strcmp(token, "!") == 0) {
+        tipos t1,aux;
+        t1 = pop(s);
+        aux.tipo=tLong;
+        double v1=0;
+
+        if(t1.tipo==tLong){v1=(double)t1.val.l;} else{v1=t1.val.d;}
+        if(v1!=0){aux.val.l=0;}else aux.val.l=1;
+
+        push(s,aux);
+
+        return 1;
+    }
+    return 0 ;
+}
+int maior(STACK *s,char *token) {
+    if(strcmp(token, "e>") == 0) {
+        tipos t1,t2,aux;
+        double v1=0,v2=0;
+
+        t2 = pop(s);
+        t1 = pop(s);
+
+        if(t1.tipo==tLong){v1=(double)t1.val.l;} else {v1=t1.val.d;}
+        if(t2.tipo==tLong){v2=(double)t2.val.l;} else {v2=t2.val.d;}
+
+        if (v1>v2) {if(t1.tipo==tLong) {aux.tipo=tLong; aux.val.l=v1;} else {aux.tipo=tDouble; aux.val.d=v1;}}
+        else {if(t2.tipo==tLong){aux.tipo=tLong; aux.val.l=v2;} else {aux.tipo=tDouble; aux.val.d=v2;}}
+
+    push(s,aux);
+    return 1;
+}
+return 0 ;
+}
+int menor(STACK *s,char *token) {
+    if(strcmp(token, "e<") == 0) {
+        tipos t1,t2,aux;
+        double v1=0,v2=0;
+
+        t2 = pop(s);
+        t1 = pop(s);
+
+        if(t1.tipo==tLong){v1=(double)t1.val.l;} else {v1=t1.val.d;}
+        if(t2.tipo==tLong){v2=(double)t2.val.l;} else {v2=t2.val.d;}
+
+        if (v1<v2) {if(t1.tipo==tLong) {aux.tipo=tLong; aux.val.l=v1;} else {aux.tipo=tDouble; aux.val.d=v1;}}
+        else {if(t2.tipo==tLong){aux.tipo=tLong; aux.val.l=v2;} else {aux.tipo=tDouble; aux.val.d=v2;}}
+
+        push(s,aux);
+        return 1;
+    }
+    return 0 ;
+}
+
+int conjuncao (STACK *s,char *token) {
+    if(strcmp(token, "e&") == 0) {
+        tipos t1,t2;
+        double v1=0,v2=0;
+
+        t2 = pop(s);
+        t1 = pop(s);
+
+        if (t1.tipo==tLong) {v1=(double)t1.val.l;} else {v1=t1.val.d;}
+        if (t2.tipo==tLong) {v2=(double)t2.val.l;} else {v2=t2.val.d;}
+
+        if (v1==0 || v2==0) {t1.tipo=tLong; t1.val.l=0; push(s,t1);} else {push(s,t2);}
+
+        return 1;
+    }
+    return 0 ;
+}
+int disjuncao (STACK *s,char *token) {
+    if(strcmp(token, "e|") == 0) {
+        tipos t1,t2;
+        double v1=0,v2=0;
+
+        t2 = pop(s);
+        t1 = pop(s);
+
+        if (t1.tipo==tLong) {v1=(double)t1.val.l;} else {v1=t1.val.d;}
+        if (t2.tipo==tLong) {v2=(double)t2.val.l;} else {v2=t2.val.d;}
+        if (v1!=0 && v2!=0) { push(s,t1);}
+        if (v1==0 && v2==0) {t1.tipo=tLong; t1.val.l=0; push(s,t1);}
+        else {if (v1==0) {push(s,t2);}if (v2==0) {push(s,t1);}}
+
+        return 1;
+    }
+    return 0 ;
+}
+
+int vars (STACK *s,char *token) {
+    if (strlen(token) == 1 && isalpha (token[0]) != 0) {
+        tipos aux ;
+        int vall = ((int) token[0])-65 ;
+        aux.tipo = s->var[vall].tipo;
+        if (aux.tipo==tLong){aux.val.l=s->var[vall].val.l;}
+        if (aux.tipo==tDouble){aux.val.d=s->var[vall].val.d;}
+        if (aux.tipo==tChar){aux.val.c=s->var[vall].val.c;}
+        push(s,aux);
+        return 1;
+    }
+    return 0 ;
+}
+int vars2p (STACK *s,char *token) {
+    if (strlen(token) == 2 && ':'==token[0] && isalpha (token[1]) != 0 )  {
+
+        int vall = ((int) token[1]) - 65;
+        s->var[vall]=s->pilha[s->topo];
+        return 1;
+    }
+    return 0;
+}
