@@ -16,15 +16,17 @@ typedef enum {
     tLong,    // Valor 0
     tDouble,  // Valor 1
     tChar,    // Valor 2
-    tStr      // Valor 3
+    tStr,     // Valor 3
+    tArr      // Valor 4     
 } Enum_tipo;
 
 /// União responsavel por oferecer á stack varios tipos.
 typedef union un {
-    long l;         // Long
-    double d;       // Double
-    char c;         // Char
-    char s[BUFSIZ]; // String
+    long l;          // Long
+    double d;        // Double
+    char c;          // Char
+    char* s;         // String
+    union un* arr;   // Array
 } Uniao_tipos;
 
 /// Struct que define o tipo dos elementos da stack (Possuem uma união de tipos e um enum que indica o tipo do elemento)
@@ -49,14 +51,12 @@ STACK* nova();
 void push (STACK *s,tipos x); /// Função que insere um elemento no topo da stack. 
 tipos pop (STACK *s); /// Função que retira o elemento que se encontra no topo da stack.
 
-
 // OUTROS
 void handle (STACK *s,char *token); // Função responsavel por associar um token de um operador á sua função correspondente.
 int num (STACK *s,char *token); /// Função que trata dos tokens não reconhecidos e constantes, verifica o tipo do token e atribui uma operação.
 int top_tipo (STACK *s); /// Devolve o tipo do topo da stack
 int vars (STACK *s ,char *token);
 int vars2p (STACK *s ,char *token);
-
 
 // OPERAÇÕES
 int soma (STACK *s,char *token); /// Função que soma dois elementos da stack e coloca o resultado no topo desta.
@@ -86,8 +86,8 @@ int conv_int (STACK *s,char *token); /// Converte o topo da stack para int.
 int conv_double (STACK *s,char *token); /// Converte o topo da stack para double.
 int conv_char (STACK *s,char *token); /// Converte o topo da stack para char.
 int ler (STACK *s, char *token); /// Função que lê input e insere o resultado desse input na stack.
-int debugger (STACK *s, char *token);/// Função responsavel pelo debug do programa.
-int mai (STACK *s, char *token);
+int debugger (STACK *s, char *token); /// Função responsavel pelo debug do programa.
+int mai (STACK *s, char *token); 
 int men (STACK *s, char *token);
 int interroga(STACK *s, char *token);
 int igual (STACK *s, char *token);
@@ -96,7 +96,7 @@ int maior(STACK *s, char *token);
 int menor(STACK *s, char *token);
 int conjuncao(STACK *s, char *token);
 int disjuncao(STACK *s, char *token);
-
+int strings(STACK *s, char *token);
 
 #endif // TIPOS_H
 

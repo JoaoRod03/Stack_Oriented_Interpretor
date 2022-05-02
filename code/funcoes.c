@@ -94,6 +94,7 @@ void handle (STACK *s,char *token){
     disjuncao (s, token) ||
     vars (s, token) ||
     vars2p (s, token) ||
+    strings (s, token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
@@ -704,6 +705,7 @@ int conjuncao (STACK *s,char *token) {
     }
     return 0 ;
 }
+
 int disjuncao (STACK *s,char *token) {
     if(strcmp(token, "e|") == 0) {
         tipos t1,t2;
@@ -736,12 +738,50 @@ int vars (STACK *s,char *token) {
     }
     return 0 ;
 }
+
 int vars2p (STACK *s,char *token) {
     if (strlen(token) == 2 && ':'==token[0] && isalpha (token[1]) != 0 )  {
-
         int vall = ((int) token[1]) - 65;
         s->var[vall]=s->pilha[s->topo];
         return 1;
     }
     return 0;
 }
+
+int strings (STACK *s,char *token) {
+    int size = strlen(token);
+    if (token[0]=='"' && token[size-1]=='"') {
+        tipos aux;
+        char str[BUFSIZ];
+        for (int i=1; i<size-1; i++) {
+            str[i-1]=token[i];
+        }
+        aux.tipo=tStr;
+        aux.val.s = (char*) malloc((size+1)*sizeof(char));
+        strcpy(aux.val.s, str);
+        push(s,aux);
+        return 1;
+    }
+    return 0 ;
+}
+
+/*
+int arrays (STACK *s, char *token) {
+    int size = strlen(token);
+    if (token[0]=='[' && token[size-1]==']') {
+        tipos aux;
+        tipos str[BUFSIZ];
+
+        for (int i=1; i<size-1; i++) {
+            str[i-1]=token[i];
+            if ()
+        }
+
+        aux.tipo=tStr;
+        aux.val.s = (char*) malloc((size+1)*sizeof(char));
+        strcpy(aux.val.s, str);
+        push(s,aux);
+        return 1;
+    }
+    return 0 ;
+}*/
