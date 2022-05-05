@@ -26,7 +26,6 @@ typedef union un {
     double d;        // Double
     char c;          // Char
     char* s;         // String
-    union un* arr;   // Array
 } Uniao_tipos;
 
 /// Struct que define o tipo dos elementos da stack (Possuem uma união de tipos e um enum que indica o tipo do elemento)
@@ -38,8 +37,10 @@ typedef struct ru {
 /// Struct da stack, constituido por um array que armazena os valores da stack e um apontador para o topo desta.
 typedef struct stack {
     tipos pilha [STACK_SIZE]; 
-    int topo;
     tipos var [30];
+    int topo;
+    struct stack* next_stack;
+    struct stack* prev_stack;
 } STACK;
 
 /////////////////// INICIALIZAÇÃO DE FUNÇÕES ///////////////////
@@ -91,12 +92,14 @@ int mai (STACK *s, char *token);
 int men (STACK *s, char *token);
 int interroga(STACK *s, char *token);
 int igual (STACK *s, char *token);
-int nao(STACK *s, char *token);
-int maior(STACK *s, char *token);
-int menor(STACK *s, char *token);
-int conjuncao(STACK *s, char *token);
-int disjuncao(STACK *s, char *token);
-int strings(STACK *s, char *token);
-
+int nao (STACK *s, char *token);
+int maior (STACK *s, char *token);
+int menor (STACK *s, char *token);
+int conjuncao (STACK *s, char *token);
+int disjuncao (STACK *s, char *token);
+int strings (STACK *s, char *token);
+int range (STACK *s, char *token);
+int array_start (STACK *s, char *token);
+int array_end (STACK *s, char *token);
 #endif // TIPOS_H
 
