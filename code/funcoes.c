@@ -94,8 +94,8 @@ void handle (STACK *s,char *token){
     vars2p (s, token) ||
     strings (s, token) ||
     range (s, token) ||
-    array_start (s, token) ||
-    array_end (s, token) ||
+    // array_start (s, token) ||
+    // array_end (s, token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
@@ -785,15 +785,22 @@ int range (STACK *s, char *token) {
     return 0 ;
 }
 
+void printStack (STACK *s) {
+    for (int i=1; i<=(s->topo); i++) { 
+        if (s->pilha[i].tipo == tLong) {printf("%ld",s->pilha[i].val.l);} 
+        if (s->pilha[i].tipo == tDouble) {printf("%g",s->pilha[i].val.d);} 
+        if (s->pilha[i].tipo == tChar) {printf("%c",s->pilha[i].val.c);} 
+        if (s->pilha[i].tipo == tStr) {printf("%s",s->pilha[i].val.s);} 
+        if (s->pilha[i].tipo == tArr) {printStack(s->pilha[i].val.arr);}
+    }
+}
 
+// ELE NEM SEQUER EXECUTA O PRINTSTACK N SEI
+
+/*
 int array_start (STACK *s, char *token) {
     if (token[0]=='[') {
-        STACK *aux=nova();
-        s->prev_stack=nova();
-
-        aux=s;
-        s->prev_stack=aux;
-
+        s->[s->topo]->next=((tipos*) malloc(sizeof(tipos));
         return 1;
     }
     return 0 ;
@@ -810,4 +817,13 @@ int array_end (STACK *s, char *token) {
         return 1;
     }
     return 0 ;
+}
+*/
+
+void handle_arr (STACK *s, char *token) {
+        s->pilha[s->topo].tipo = tArr;
+        s->pilha[s->topo].val.arr = nova(); 
+        handle (s->pilha[s->topo].val.arr, token); 
+
+        printStack(s);
 }

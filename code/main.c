@@ -28,23 +28,25 @@ int main() {
     STACK *s = nova();
     char line[BUFSIZ];
     char token[BUFSIZ];
+    
+    int arr_pos=0;
 
-    // Input
+    // Input 
     if (fgets(line,BUFSIZ,stdin)!= NULL) {
         while (sscanf(line,"%s %[^\n]",token,line) == 2) {
-            handle(s ,token);
-        }
-        handle(s,token);
+            if (strcmp(token,"[") == 0) {arr_pos++;} 
+            if (strcmp(token,"]") == 0) {arr_pos--;}
 
-        for (int i=1; i<=(s->topo); i++) {
-                if (s->pilha[i].tipo == tLong) {printf("%ld",s->pilha[i].val.l);} 
-                if (s->pilha[i].tipo == tDouble) {printf("%g",s->pilha[i].val.d);} 
-                if (s->pilha[i].tipo == tChar) {printf("%c",s->pilha[i].val.c);} 
-                if (s->pilha[i].tipo == tStr) {printf("%s",s->pilha[i].val.s);} 
+            if (token[0]!='[' && token[0]!=']') {
+                if (arr_pos>0) {handle_arr(s,token);} 
+                if (arr_pos==0) {handle(s, token);}
             }
+        }
+        if (token[0]!='[' && token[0]!=']') {handle(s,token);}
+
+        printStack(s);
         printf("\n");
     }
     return 0 ;
-}
-
+} 
 
