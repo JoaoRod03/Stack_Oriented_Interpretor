@@ -59,6 +59,8 @@ int num (STACK *s,char *token); /// Função que trata dos tokens não reconheci
 int top_tipo (STACK *s); /// Devolve o tipo do topo da stack
 int vars (STACK *s ,char *token);
 int vars2p (STACK *s ,char *token);
+void printStack(STACK *s);
+STACK* criarArray(STACK *s);
 
 // OPERAÇÕES
 int soma (STACK *s,char *token); /// Função que soma dois elementos da stack e coloca o resultado no topo desta.
@@ -100,6 +102,5 @@ int conjuncao (STACK *s, char *token);
 int disjuncao (STACK *s, char *token);
 int strings (STACK *s, char *token);
 int range (STACK *s, char *token);
-void handle_arr();
-void printStack();
+
 #endif // TIPOS_H

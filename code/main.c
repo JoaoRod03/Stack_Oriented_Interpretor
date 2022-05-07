@@ -25,28 +25,41 @@
 
 /// Função principal main responsavél por receber o input do utilizador e chamar o handler
 int main() {
-    STACK *s = nova();
+    STACK *stack = nova();
     char line[BUFSIZ];
     char token[BUFSIZ];
     
-    int arr_pos=0;
-
+    STACK* arr_alvo = stack;
+    int arr_num=0;
+    
     // Input 
     if (fgets(line,BUFSIZ,stdin)!= NULL) {
         while (sscanf(line,"%s %[^\n]",token,line) == 2) {
-            if (strcmp(token,"[") == 0) {arr_pos++;} 
-            if (strcmp(token,"]") == 0) {arr_pos--;}
 
-            if (token[0]!='[' && token[0]!=']') {
-                if (arr_pos>0) {handle_arr(s,token);} 
-                if (arr_pos==0) {handle(s, token);}
+            // Verificar token de array
+            if (strcmp(token,"[") == 0) {arr_alvo = criarArray(arr_alvo); arr_num++;} 
+            if (strcmp(token,"]") == 0) {arr_num--;} 
+
+            // Aceder ao array
+            arr_alvo = stack;
+            for (int i=0; i<arr_num; i++) {
+                arr_alvo = arr_alvo->pilha[arr_alvo->topo].val.arr;
+            }
+
+            // Handle
+            if (strcmp(token,"[") != 0 && strcmp(token,"]") != 0) {
+                handle(arr_alvo,token);
             }
         }
-        if (token[0]!='[' && token[0]!=']') {handle(s,token);}
+        
+        if (strcmp(token,"[") != 0 && strcmp(token,"]") != 0) {handle(arr_alvo,token);}
 
-        printStack(s);
+        printStack(stack);
         printf("\n");
     }
     return 0 ;
 } 
+
+
+
 

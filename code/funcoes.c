@@ -99,6 +99,23 @@ void handle (STACK *s,char *token){
     num (s,token)) {return;} // Deixar no fim
 }
 
+STACK* criarArray (STACK *s) {
+    s->topo++;
+    s->pilha[s->topo].tipo = tArr;
+    s->pilha[s->topo].val.arr = nova();
+    return s->pilha[s->topo].val.arr;
+}        
+
+void printStack (STACK *s) {
+    for (int i=1; i<=(s->topo); i++) { 
+        if (s->pilha[i].tipo == tLong) {printf("%ld",s->pilha[i].val.l);} 
+        if (s->pilha[i].tipo == tDouble) {printf("%g",s->pilha[i].val.d);} 
+        if (s->pilha[i].tipo == tChar) {printf("%c",s->pilha[i].val.c);} 
+        if (s->pilha[i].tipo == tStr) {printf("%s",s->pilha[i].val.s);} 
+        if (s->pilha[i].tipo == tArr) {printStack(s->pilha[i].val.arr);}
+    }
+}
+
 /// Função que trata dos tokens não reconhecidos e constantes, verifica o tipo do token e atribui uma operação.
 int num (STACK *s,char *token) {
     tipos aux;
@@ -157,6 +174,8 @@ int soma (STACK *s,char *token) {
             strcpy (aux.val.s, t1.val.s);
             strcat (aux.val.s, t2.val.s);
         }
+
+        // Arrays
 
         push(s,aux);
 
@@ -671,6 +690,7 @@ int maior(STACK *s,char *token) {
 }
 return 0 ;
 }
+
 int menor(STACK *s,char *token) {
     if(strcmp(token, "e<") == 0) {
         tipos t1,t2,aux;
@@ -751,6 +771,7 @@ int vars2p (STACK *s,char *token) {
     return 0;
 }
 
+
 int strings (STACK *s, char *token) {
     int size = strlen(token);
     if (token[0]=='"' && token[size-1]=='"') {
@@ -767,6 +788,7 @@ int strings (STACK *s, char *token) {
     }
     return 0 ;
 }
+
 
 int range (STACK *s, char *token) {
     if (strcmp(token, ",") == 0) {
@@ -785,45 +807,3 @@ int range (STACK *s, char *token) {
     return 0 ;
 }
 
-void printStack (STACK *s) {
-    for (int i=1; i<=(s->topo); i++) { 
-        if (s->pilha[i].tipo == tLong) {printf("%ld",s->pilha[i].val.l);} 
-        if (s->pilha[i].tipo == tDouble) {printf("%g",s->pilha[i].val.d);} 
-        if (s->pilha[i].tipo == tChar) {printf("%c",s->pilha[i].val.c);} 
-        if (s->pilha[i].tipo == tStr) {printf("%s",s->pilha[i].val.s);} 
-        if (s->pilha[i].tipo == tArr) {printStack(s->pilha[i].val.arr);}
-    }
-}
-
-// ELE NEM SEQUER EXECUTA O PRINTSTACK N SEI
-
-/*
-int array_start (STACK *s, char *token) {
-    if (token[0]=='[') {
-        s->[s->topo]->next=((tipos*) malloc(sizeof(tipos));
-        return 1;
-    }
-    return 0 ;
-}
-
-int array_end (STACK *s, char *token) {
-    if (token[0]==']') {
-        STACK *aux=nova();
-    
-        aux=s;
-        s->next_stack=aux;
-        s=s->prev_stack;
-
-        return 1;
-    }
-    return 0 ;
-}
-*/
-
-void handle_arr (STACK *s, char *token) {
-        s->pilha[s->topo].tipo = tArr;
-        s->pilha[s->topo].val.arr = nova(); 
-        handle (s->pilha[s->topo].val.arr, token); 
-
-        printStack(s);
-}
