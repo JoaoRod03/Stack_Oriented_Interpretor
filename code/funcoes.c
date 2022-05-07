@@ -176,6 +176,22 @@ int soma (STACK *s,char *token) {
         }
 
         // Arrays
+        if (t1.tipo==tArr && t2.tipo==tArr) {
+            aux.tipo=tArr;
+            aux.val.arr = nova();
+            STACK* arrAux = aux.val.arr;
+            STACK* arrT1 = t1.val.arr;
+            STACK* arrT2 = t2.val.arr;
+
+            int size1=arrT1->topo; 
+            int size2=arrT2->topo; 
+            
+            memcpy(arrAux->pilha,arrT1->pilha,(sizeof(tipos)*size1));
+            memcpy(arrAux->pilha,arrT2->pilha,(sizeof(tipos)*size2));
+
+            aux.val.arr->pilha[0].tipo=tLong;
+            aux.val.arr->pilha[0].val.l=123;
+        }
 
         push(s,aux);
 
@@ -183,7 +199,6 @@ int soma (STACK *s,char *token) {
     }
     return 0 ;
 }
-
 
 /// Função que subtrai dois elementos da stack e coloca o resultado no topo desta.
 int menos (STACK *s,char *token) {
@@ -609,34 +624,71 @@ int mai(STACK *s,char *token) {
         t2 = pop(s);
         t1 = pop(s);
 
-        aux.tipo=tLong;
-        double v1=0,v2=0;
-        if(t1.tipo==tLong){v1=(double)t1.val.l;} else{v1=t1.val.d;}
-        if(t2.tipo==tLong){v2=(double)t2.val.l;} else{v2=t2.val.d;}
+        if (t1.tipo==tLong || t1.tipo==tDouble || t2.tipo==tLong || t2.tipo==tDouble) {
+            aux.tipo=tLong;
+            double v1=0,v2=0;
+            if (t1.tipo==tLong){v1=(double)t1.val.l;} else{v1=t1.val.d;}
+            if (t2.tipo==tLong){v2=(double)t2.val.l;} else{v2=t2.val.d;}
 
-        if(v1>v2){aux.val.l=1;}else aux.val.l=0;
-        push(s,aux);
+            if (v1>v2) {aux.val.l=1;} else {aux.val.l=0;}
+            push(s,aux);
+        }
+
+        if (t1.tipo == tStr && t2.tipo == tStr) {
+            aux.tipo=tLong;
+            int size=strlen(t2.val.s);
+            int teste=0;
+            if (strcmp(t1.val.s,t2.val.s)==0) {aux.val.l=1;} else {aux.val.l=0;}
+
+            for (int i=0; i<size; i++) {
+                if (t2.val.s[i]==t1.val.s[i]) {teste++;}
+            }   
+
+            if (size==teste) {return 1;} else {return 0;}
+            push(s,aux);
+        }
+
         return 1;
     }
     return 0 ;
 }
+
 /// Se um valor for maior que o outro ira devolver 1 senão irá devolver 0
 int men(STACK *s,char *token) {
-    if(strcmp(token, "<") == 0) {
+    if (strcmp(token, "<") == 0) {
         tipos t1,t2,aux;
         t2 = pop(s);
         t1 = pop(s);
-        aux.tipo=tLong;
-        double v1=0,v2=0;
-        if(t1.tipo==tLong){v1=(double)t1.val.l;} else{v1=t1.val.d;}
-        if(t2.tipo==tLong){v2=(double)t2.val.l;} else{v2=t2.val.d;}
 
-        if(v1<v2){aux.val.l=1;}else aux.val.l=0;
-        push(s,aux);
+        if (t1.tipo==tLong || t1.tipo==tDouble || t2.tipo==tLong || t2.tipo==tDouble) {
+            aux.tipo=tLong;
+            double v1=0,v2=0;
+            if (t1.tipo==tLong){v1=(double)t1.val.l;} else{v1=t1.val.d;}
+            if (t2.tipo==tLong){v2=(double)t2.val.l;} else{v2=t2.val.d;}
+
+            if (v1<v2) {aux.val.l=1;} else {aux.val.l=0;}
+            push(s,aux);
+        }
+
+        if (t1.tipo == tStr && t2.tipo == tStr) {
+            aux.tipo=tLong;
+            int size=strlen(t2.val.s);
+            int teste=0;
+            if (strcmp(t1.val.s,t2.val.s)==0) {aux.val.l=1;} else {aux.val.l=0;}
+
+            for (int i=0; i<size; i++) {
+                if (t2.val.s[i]==t1.val.s[i]) {teste++;}
+            }   
+
+            if (size==teste) {return 1;} else {return 0;}
+            push(s,aux);
+        }
+
         return 1;
     }
     return 0 ;
 }
+
 int igual(STACK *s,char *token) {
     if(strcmp(token, "=") == 0) {
         tipos t1,t2,aux;
@@ -644,17 +696,42 @@ int igual(STACK *s,char *token) {
         t2 = pop(s);
         t1 = pop(s);
 
-        aux.tipo=tLong;
-        double v1=0,v2=0;
-        if(t1.tipo==tLong) {v1=(double)t1.val.l;} else {v1=t1.val.d;}
-        if(t2.tipo==tLong) {v2=(double)t2.val.l;} else {v2=t2.val.d;}
+        if (t1.tipo==tLong || t1.tipo==tDouble) {
+            aux.tipo=tLong;
+            double v1=0,v2=0;
+            if(t1.tipo==tLong) {v1=(double)t1.val.l;} else {v1=t1.val.d;}
+            if(t2.tipo==tLong) {v2=(double)t2.val.l;} else {v2=t2.val.d;}
 
-        if(v1==v2) {aux.val.l=1;} else {aux.val.l=0;}
+            if(v1==v2) {aux.val.l=1;} else {aux.val.l=0;}
+        }
+
+        if (t1.tipo == tStr && t2.tipo== tLong) {
+            aux.tipo = tChar ; 
+            aux.val.c = t1.val.s[t2.val.l] ;
+        }
+
+        if (t1.tipo == tArr && t2.tipo == tLong) {
+            STACK* arrT1 = t1.val.arr;
+            aux.tipo = arrT1->pilha[t2.val.l].tipo;
+            int pos = t2.val.l+1;
+            if (aux.tipo==tLong) {aux.val.l = t1.val.arr->pilha[pos].val.l;}
+            if (aux.tipo==tDouble) {aux.val.d = arrT1->pilha[pos].val.d;}
+            if (aux.tipo==tChar) {aux.val.c = arrT1->pilha[pos].val.c;}
+            if (aux.tipo==tStr) {aux.val.s = arrT1->pilha[pos].val.s;}
+            if (aux.tipo==tArr) {aux.val.arr = arrT1->pilha[pos].val.arr;}
+        }
+
+        if (t1.tipo == tStr && t2.tipo == tStr) {
+            aux.tipo=tLong;
+            if (strcmp(t1.val.s,t2.val.s)==0) {aux.val.l=1;} else {aux.val.l=0;}
+        }
+
         push(s,aux);
         return 1;
     }
     return 0 ;
 }
+
 int nao(STACK *s,char *token) {
     if(strcmp(token, "!") == 0) {
         tipos t1,aux;
@@ -671,6 +748,7 @@ int nao(STACK *s,char *token) {
     }
     return 0 ;
 }
+
 int maior(STACK *s,char *token) {
     if(strcmp(token, "e>") == 0) {
         tipos t1,t2,aux;
@@ -789,7 +867,6 @@ int strings (STACK *s, char *token) {
     return 0 ;
 }
 
-
 int range (STACK *s, char *token) {
     if (strcmp(token, ",") == 0) {
         tipos t1,aux;
@@ -799,11 +876,55 @@ int range (STACK *s, char *token) {
         if (t1.tipo == tStr) {
             aux.tipo=tLong;
             aux.val.l=strlen(t1.val.s);
+            push(s,aux);
         }
 
-        push(s,aux);
+        if (t1.tipo == tLong) {
+            aux.tipo = tArr;
+            aux.val.arr=nova();
+            STACK* arrAux = aux.val.arr;
+            int x = t1.val.l ;
+            for (int i = 0 ; i < x; i++ ) {
+                arrAux->pilha[i].tipo=tLong;
+                arrAux->pilha[i].val.l = i;
+            }
+            push (s,aux) ;
+        }
+
+        /*
+        if (t1.tipo == tArr) {
+            char arr = t1.val.arr ;
+            int i = 0;
+            for (i; arr[i] != "/0" ; i++) ;
+            aux.tipo = tLong;
+            aux.val.l = i ;
+            push(s,aux);
+        }
+        */
+
         return 1;
     }
     return 0 ;
 }
 
+
+int elementos_array (STACK* s, char* token) {
+    if (strcmp(token, "~") == 0) {
+        tipos t1 ;
+        t1 = pop (s) ;
+
+        if (t1.tipo == tArr) {
+            char str [BUFSIZ] ;
+            strcpy(str, t1.val.s) ;
+            int a = strlen (str) ;
+            for (int i = 0 ; i < a ; i++) {
+                tipos aux ;
+                aux.tipo = tChar ; 
+                aux.val.c = str[i] ;
+                push (s , aux) ;
+            }
+        }
+    return 1;
+    }
+return 0 ; 
+}
