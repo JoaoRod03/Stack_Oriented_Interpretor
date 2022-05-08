@@ -339,27 +339,35 @@ void array_to_stack (STACK* s, tipos t1) {
     }
 }
 
+// AINDA NAO FUNCIONA
 void substring (STACK* s, tipos t1, tipos t2) {
     if (t1.tipo==tStr && t2.tipo==tStr) {
         tipos aux;
         aux.tipo=tArr;
-        int arr_pos=1;
+        int arr_pos=1, teste=0;
         int size1 = strlen(t1.val.s);
         int size2 = strlen(t2.val.s);
 
-
         for (int i=0; i<size1; i++) {
-
+            char str_aux[BUFSIZ];
             for (int w=i; w<size2; w++) {
-                int teste=-1;
                 if (t1.val.s[w]==t2.val.s[w]) {teste++;}
             }
 
+            // Copiar desde i até 
+            for (int z=0; z<i; z++) {
+                str_aux[z]=t1.val.s[z];
+            }
+
             if (teste==size2) {
+                int tamanho = strlen(str_aux);
                 printf(".T.");
-                t1.val.arr->pilha[arr_pos].tipo = tStr;  
-                t1.val.arr->pilha[arr_pos].val.s = ;  
+                aux.val.arr->pilha[arr_pos].tipo = tStr;  
+                aux.val.arr->pilha[arr_pos].val.s = (char*) malloc(tamanho*sizeof(char));
+                aux.val.arr->pilha[arr_pos].val.s = str_aux;
             }
         }
+        
+        push(s,aux);
     } 
 }
