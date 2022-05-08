@@ -49,26 +49,14 @@ int bitwize_not (STACK *s,char *token) {
     if(strcmp(token, "~") == 0) {
         tipos t1 = pop(s);
 
+        // Longs (Operação bitwize)
         if (t1.tipo==tLong) {
             t1.val.l = (~(t1.val.l));
             push(s,t1);
         }
 
-        // Coloca na stack os elementos do array
-        if (t1.tipo==tArr) {
-            tipos aux;
-            int size = t1.val.arr->topo;
-            for (int i=1; i<size+1; i++) {
-                STACK* ajuda = t1.val.arr;
-                aux.tipo = ajuda->pilha[i].tipo;
-                if (aux.tipo==tLong) {aux.val.l = ajuda->pilha[i].val.l;}
-                if (aux.tipo==tDouble) {aux.val.d = ajuda->pilha[i].val.d;}
-                if (aux.tipo==tChar) {aux.val.c = ajuda->pilha[i].val.c;}
-                if (aux.tipo==tStr) {aux.val.s = ajuda->pilha[i].val.s;}
-                if (aux.tipo==tArr) {aux.val.arr = ajuda->pilha[i].val.arr;}
-                push(s,aux);
-            }
-        }
+        // Arrays (Coloca na stack os elementos do array)
+        if (t1.tipo==tArr) {array_to_stack(s,t1);}
 
         return 1;
     }

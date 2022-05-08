@@ -62,8 +62,9 @@ int duplicar ();    /// Duplica o elemento que se encontra no topo da stack.
 int rodar ();       /// Roda os 3 elementos no topo da stack (123 -> 231).
 int pop_elem ();    /// Retira o elemento que se encontra no topo da stack.
 int trocar ();      /// Troca os dois elementos do topo da stack
-int copia ();       ///  Copia n-ésimo elemento para o topo da stack. (n $)
-
+int copia ();       /// Copia n-ésimo elemento para o topo da stack. (n $)
+int ler ();         /// Função que lê input e insere o resultado desse input na stack.
+int debugger ();    /// Função responsavel pelo debug do programa.
 
 // ------------------- OPERACOES.C -------------------
 int soma ();        /// Função que soma dois elementos da stack e coloca o resultado no topo desta.
@@ -75,22 +76,16 @@ int expo ();        /// Calcula o resultado de elevar um elemento da stack a out
 int incrementa ();  /// Incrementa o valor de um elemento da stack em 1 valor.
 int decrementa ();  /// Decrementa o valor de um elemento da stack em 1 valor.
 
-
 // ------------------- BITWIZE.C -------------------
 int bitwize_and ();  /// Realiza a operação (and / &) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int bitwize_or ();   /// Realiza a operação (or / |) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int bitwize_xor ();  /// Realiza a operação (xor / ^) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 int bitwize_not ();  /// Realiza a operação (not / ~) ao nivel binario entre dois elementos da stack, coloca o resultado final nesta.
 
-
 // ------------------- CONVERSOES.C -------------------
 int conv_int ();    /// Converte o topo da stack para int.
 int conv_double (); /// Converte o topo da stack para double.
 int conv_char ();   /// Converte o topo da stack para char.
-
-
-int ler ();         /// Função que lê input e insere o resultado desse input na stack.
-int debugger ();    /// Função responsavel pelo debug do programa.
 
 // ------------------- LOGICA.C -------------------
 int mai (); 
@@ -107,5 +102,14 @@ int disjuncao ();
 int strings ();
 int range ();
 int input_all();
+void concatenar();
+void concatenar_mul();
+void remover_first();
+void remover_last();
+void buscar_indice();
+void buscar_inicio();
+void buscar_fim();
+void array_to_stack();
+void substring();
 
 #endif // TIPOS_H

@@ -38,27 +38,20 @@ int mai(STACK *s,char *token) {
         t2 = pop(s);
         t1 = pop(s);
 
+        // Numeros reais (Comparação maior)
         if (t1.tipo==tLong || t1.tipo==tDouble || t2.tipo==tLong || t2.tipo==tDouble) {
             aux.tipo=tLong;
             double v1=0,v2=0;
-            if (t1.tipo==tLong){v1=(double)t1.val.l;} else{v1=t1.val.d;}
-            if (t2.tipo==tLong){v2=(double)t2.val.l;} else{v2=t2.val.d;}
+            if (t1.tipo==tLong) {v1=(double)t1.val.l;} else {v1=t1.val.d;}
+            if (t2.tipo==tLong) {v2=(double)t2.val.l;} else {v2=t2.val.d;}
 
             if (v1>v2) {aux.val.l=1;} else {aux.val.l=0;}
             push(s,aux);
         }
 
-        if (t1.tipo == tStr && t2.tipo == tStr) {
-            aux.tipo=tLong;
-            int size=strlen(t2.val.s);
-            int teste=0;
-
-            for (int i=size; i>0; i--) {
-                if (t2.val.s[size]==t1.val.s[i]) {teste++;}
-            }   
-
-            if (teste>0) {aux.val.l=1;} else {aux.val.l=0;}
-            push(s,aux);
+        // Strings e arrays (Vai buscar x elementos ao fim)
+        if (t1.tipo == tStr || t1.tipo == tArr || t2.tipo == tStr || t2.tipo == tArr ) {
+            buscar_fim(s,t1,t2);
         }
 
         return 1;
@@ -73,6 +66,7 @@ int men(STACK *s, char *token) {
         t2 = pop(s);
         t1 = pop(s);
 
+        // Numeros reais (Comparação menor)
         if (t1.tipo==tLong || t1.tipo==tDouble || t2.tipo==tLong || t2.tipo==tDouble) {
             aux.tipo=tLong;
             double v1=0,v2=0;
@@ -83,17 +77,9 @@ int men(STACK *s, char *token) {
             push(s,aux);
         }
 
-        if (t1.tipo == tStr && t2.tipo == tStr) {
-            aux.tipo=tLong;
-            int size=strlen(t2.val.s);
-            int teste=0;
-
-            for (int i=0; i<size; i++) {
-                if (t2.val.s[i]==t1.val.s[i]) {teste++;}
-            }   
-
-            if (size==teste) {aux.val.l=1;} else {aux.val.l=0;}
-            push(s,aux);
+        // Strings e arrays (Vai buscar x elementos ao inicio)
+        if (t1.tipo == tStr || t1.tipo == tArr || t2.tipo == tStr || t2.tipo == tArr ) {
+            buscar_inicio(s,t1,t2);
         }
 
         return 1;
@@ -107,31 +93,21 @@ int igual(STACK *s,char *token) {
 
         t2 = pop(s);
         t1 = pop(s);
-
+        
+        // Numeros reais (Verifica se os elementos são iguais)
         if (t1.tipo==tLong || t1.tipo==tDouble) {
             aux.tipo=tLong;
             double v1=0,v2=0;
             if(t1.tipo==tLong) {v1=(double)t1.val.l;} else {v1=t1.val.d;}
             if(t2.tipo==tLong) {v2=(double)t2.val.l;} else {v2=t2.val.d;}
 
-            if(v1==v2) {aux.val.l=1;} else {aux.val.l=0;}
+            if (v1==v2) {aux.val.l=1;} else {aux.val.l=0;}
             push(s,aux);
         }
 
-        if (t1.tipo == tStr && t2.tipo == tLong) {
-            aux.tipo = tChar ; 
-            aux.val.c = t1.val.s[t2.val.l] ;
-            push(s,aux);
-        }
-
-        if (t1.tipo == tArr && t2.tipo == tLong) {
-            push(s,t1.val.arr->pilha[t2.val.l+1]);
-        }
-
-        if (t1.tipo == tStr && t2.tipo == tStr) {
-            aux.tipo=tLong;
-            if (strcmp(t1.val.s,t2.val.s)==0) {aux.val.l=1;} else {aux.val.l=0;}
-            push(s,aux);
+        // Strings e arrays (Vai buscar um valor por indice)
+        if (t1.tipo==tArr || t1.tipo==tStr) {
+            buscar_indice(s,t1,t2);
         }
 
         return 1;
@@ -142,12 +118,13 @@ int igual(STACK *s,char *token) {
 int nao(STACK *s,char *token) {
     if(strcmp(token, "!") == 0) {
         tipos t1,aux;
-        t1 = pop(s);
         aux.tipo=tLong;
+
+        t1 = pop(s);
         double v1=0;
 
-        if(t1.tipo==tLong){v1=(double)t1.val.l;} else{v1=t1.val.d;}
-        if(v1!=0){aux.val.l=0;}else aux.val.l=1;
+        if (t1.tipo==tLong) {v1=(double) t1.val.l;} else {v1=t1.val.d;}
+        if (v1!=0) {aux.val.l=0;} else {aux.val.l=1;}
 
         push(s,aux);
 
@@ -166,11 +143,11 @@ int maior(STACK *s,char *token) {
 
         // Numeros reais
         if (((t1.tipo==tLong || t1.tipo==tDouble ) && (t2.tipo==tDouble || t2.tipo==tLong))) {
-            if(t1.tipo==tLong){v1=(double)t1.val.l;} else {v1=t1.val.d;}
-            if(t2.tipo==tLong){v2=(double)t2.val.l;} else {v2=t2.val.d;}
+            if (t1.tipo==tLong) {v1=(double) t1.val.l;} else {v1=t1.val.d;}
+            if (t2.tipo==tLong) {v2=(double) t2.val.l;} else {v2=t2.val.d;}
 
-            if (v1>v2) {if(t1.tipo==tLong) {aux.tipo=tLong; aux.val.l=v1;} else {aux.tipo=tDouble; aux.val.d=v1;}}
-            else {if(t2.tipo==tLong){aux.tipo=tLong; aux.val.l=v2;} else {aux.tipo=tDouble; aux.val.d=v2;}}
+            if (v1>v2) {if (t1.tipo==tLong) {aux.tipo=tLong; aux.val.l=v1;} else {aux.tipo=tDouble; aux.val.d=v1;}}
+            else {if (t2.tipo==tLong) {aux.tipo=tLong; aux.val.l=v2;} else {aux.tipo=tDouble; aux.val.d=v2;}}
 
             push(s,aux);
         }
@@ -224,8 +201,8 @@ int conjuncao (STACK *s,char *token) {
         t2 = pop(s);
         t1 = pop(s);
 
-        if (t1.tipo==tLong) {v1=(double)t1.val.l;} else {v1=t1.val.d;}
-        if (t2.tipo==tLong) {v2=(double)t2.val.l;} else {v2=t2.val.d;}
+        if (t1.tipo==tLong) {v1=(double) t1.val.l;} else {v1=t1.val.d;}
+        if (t2.tipo==tLong) {v2=(double) t2.val.l;} else {v2=t2.val.d;}
 
         if (v1==0 || v2==0) {t1.tipo=tLong; t1.val.l=0; push(s,t1);} else {push(s,t2);}
 
@@ -242,11 +219,11 @@ int disjuncao (STACK *s,char *token) {
         t2 = pop(s);
         t1 = pop(s);
 
-        if (t1.tipo==tLong) {v1=(double)t1.val.l;} else {v1=t1.val.d;}
-        if (t2.tipo==tLong) {v2=(double)t2.val.l;} else {v2=t2.val.d;}
-        if (v1!=0 && v2!=0) { push(s,t1);}
+        if (t1.tipo==tLong) {v1=(double) t1.val.l;} else {v1=t1.val.d;}
+        if (t2.tipo==tLong) {v2=(double) t2.val.l;} else {v2=t2.val.d;}
+        if (v1!=0 && v2!=0) {push(s,t1);}
         if (v1==0 && v2==0) {t1.tipo=tLong; t1.val.l=0; push(s,t1);}
-        else {if (v1==0) {push(s,t2);}if (v2==0) {push(s,t1);}}
+        else {if (v1==0) {push(s,t2);} if (v2==0) {push(s,t1);}}
 
         return 1;
     }
