@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "tipos.h"
+#include "Tipos.h"
  
 
 /// Função principal main responsavél por receber o input do utilizador e chamar o handler
