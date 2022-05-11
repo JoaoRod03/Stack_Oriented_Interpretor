@@ -7,25 +7,7 @@
 #include "Tipos.h"
 
 
-//\/\/\/\/\/\/\/\/\/\/\/|---->  ARRAYS E STRINGS  <-----|/\/\/\/\/\/\/\/\/\/\/\/
-
-/// Cria uma string quando o token possui " no inicio e no fim.
-int strings (STACK *s, char *token) {
-    int size = strlen(token);
-    if (token[0]=='"' && token[size-1]=='"') {
-        tipos aux;
-        char str[BUFSIZ];
-
-        for (int i=1; i<size-1; i++) {str[i-1] = token[i];}
-        aux.tipo=tStr;
-        aux.val.s = (char*) malloc((size+1)*sizeof(char));
-        strcpy(aux.val.s, str);
-
-        push(s,aux);
-        return 1;
-    }
-    return 0 ;
-}
+//\/\/\/\/\/\/\/\/\/\/\/|---->  ARRAYS  <-----|/\/\/\/\/\/\/\/\/\/\/\/
 
 int range (STACK *s, char *token) {
     if (strcmp(token, ",") == 0) {
@@ -170,10 +152,22 @@ void concatenar (STACK* s, tipos t1, tipos t2) {
     }
 
     // Strings e char (Inserir)
+    // Char em segundo lugar
     if (t1.tipo==tStr && t2.tipo==tChar) {
         int size = strlen (t1.val.s);
         t1.val.s[size] = t2.val.c;
         push(s,t1);
+    }
+
+    if (t1.tipo==tChar && t2.tipo==tStr) {
+        tipos aux; aux.tipo=tStr;
+        int size = strlen (t2.val.s);
+        aux.val.s = (char*) malloc ((size+2) * (sizeof(char)));
+        aux.val.s[0] = t1.val.c; // Insere char
+        for (int i=0; i<size; i++) {
+            aux.val.s[i+1]=t2.val.s[i];
+        }
+        push(s,aux);
     }
 }
 
@@ -205,12 +199,13 @@ void concatenar_mul (STACK* s, tipos t1, tipos t2) {
     }
 }
 
+// TOKEN : '('
 void remover_last (STACK* s, tipos t1) { 
     // Strings (Remover ultimo elemento)
     if (t1.tipo==tStr) {
         int size=strlen(t1.val.s);
-        char alvo = t1.val.s[size];
-        t1.val.s[size]='\0';
+        char alvo = t1.val.s[size-1];
+        t1.val.s[size-1]='\0';
         tipos alvo_tipo;
         alvo_tipo.tipo=tChar;
         alvo_tipo.val.c=alvo;
@@ -339,35 +334,39 @@ void array_to_stack (STACK* s, tipos t1) {
     }
 }
 
-// AINDA NAO FUNCIONA
 void substring (STACK* s, tipos t1, tipos t2) {
-    if (t1.tipo==tStr && t2.tipo==tStr) {
-        tipos aux;
-        aux.tipo=tArr;
-        int arr_pos=1, teste=0;
-        int size1 = strlen(t1.val.s);
-        int size2 = strlen(t2.val.s);
+    int i=0, startCopia=0;
 
-        for (int i=0; i<size1; i++) {
-            char str_aux[BUFSIZ];
-            for (int w=i; w<size2; w++) {
-                if (t1.val.s[w]==t2.val.s[w]) {teste++;}
-            }
+    // Tamanho das strings
+    int size1=strlen(t1.val.s);
+    int size2=strlen(t2.val.s);
+    
+    // Array
+    tipos array; array.tipo=tArr; array.val.arr=nova();
 
-            // Copiar desde i até 
-            for (int z=0; z<i; z++) {
-                str_aux[z]=t1.val.s[z];
-            }
 
-            if (teste==size2) {
-                int tamanho = strlen(str_aux);
-                printf(".T.");
-                aux.val.arr->pilha[arr_pos].tipo = tStr;  
-                aux.val.arr->pilha[arr_pos].val.s = (char*) malloc(tamanho*sizeof(char));
-                aux.val.arr->pilha[arr_pos].val.s = str_aux;
-            }
+    // Percorrer primeira string de 0 ate size1
+    for (;i<size1; i++) {
+        int iguais=0;
+
+        // Verificar substring na posição i
+        for (int w=0; w<(size2); w++) {
+            if (t1.val.s[w+i] == t2.val.s[w]) {iguais++;} 
         }
-        
-        push(s,aux);
-    } 
+
+        // Se o tamanho dos carateres iguais for igual ao da 2 string vamos copiar para o array.
+        if (iguais==size2 || i==size1-1) {
+            if (i==size1-1) {i++;} // Copiar o que está no fim.
+            int z=0;
+            tipos aux; aux.tipo=tStr;
+            aux.val.s = (char*) malloc(1000*sizeof(char));
+            for (z=0; z<(i-startCopia); z++) {    
+                aux.val.s[z] = t1.val.s[z+startCopia];
+            }
+            // Copiar para o array
+            push(array.val.arr,aux);
+            startCopia=i+size2;   
+        }
+    }
+    push(s,array);
 }

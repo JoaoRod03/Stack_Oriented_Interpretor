@@ -152,9 +152,12 @@ int maior(STACK *s,char *token) {
             push(s,aux);
         }
         
+        // Strings (Ordem lexicografica)
         if (t1.tipo==tStr && t2.tipo==tStr) {
-            tipos aux;
-            if (strlen(t1.val.s) == strlen(t2.val.s)) {aux.val.s = t1.val.s;}
+            tipos aux; aux.tipo=tStr;
+            if(strcmp(t1.val.s,t2.val.s)>0) {aux.val.s=t1.val.s;}
+            if(strcmp(t1.val.s,t2.val.s)<0) {aux.val.s=t2.val.s;}
+            if(strcmp(t1.val.s,t2.val.s)==0) {aux.val.s=t2.val.s;}
             push (s,aux);
         }
 
@@ -176,15 +179,18 @@ int menor(STACK *s,char *token) {
             if(t1.tipo==tLong) {v1=(double)t1.val.l;} else {v1=t1.val.d;}
             if(t2.tipo==tLong) {v2=(double)t2.val.l;} else {v2=t2.val.d;}
 
-            if (v1<v2) {if(t1.tipo==tLong) {aux.tipo=tLong; aux.val.l=v1;} else {aux.tipo=tDouble; aux.val.d=v1;}}
-            else {if(t2.tipo==tLong) {aux.tipo=tLong; aux.val.l=v2;} else {aux.tipo=tDouble; aux.val.d=v2;}}
+            if (v1<v2) {if (t1.tipo==tLong) {aux.tipo=tLong; aux.val.l=v1;} else {aux.tipo=tDouble; aux.val.d=v1;}}
+            else {if (t2.tipo==tLong) {aux.tipo=tLong; aux.val.l=v2;} else {aux.tipo=tDouble; aux.val.d=v2;}}
         
             push(s,aux);
         }
 
+        // Strings (Ordem lexicografica)
         if (t1.tipo==tStr && t2.tipo==tStr) {
-            tipos aux;
-            if (strlen(t1.val.s) == strlen(t2.val.s)) {aux.val.s = t2.val.s;}
+            tipos aux; aux.tipo=tStr;
+            if(strcmp(t1.val.s,t2.val.s)<0) {aux.val.s=t1.val.s;}
+            if(strcmp(t1.val.s,t2.val.s)>0) {aux.val.s=t2.val.s;}
+            if(strcmp(t1.val.s,t2.val.s)==0) {aux.val.s=t2.val.s;}
             push (s,aux);
         }
 

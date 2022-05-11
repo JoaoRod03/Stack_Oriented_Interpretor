@@ -56,10 +56,10 @@ void handle (STACK *s,char *token){
     expo (s,token)         ||
     incrementa (s,token)   || 
     decrementa (s,token)   ||
-    bitwize_and(s,token)    || 
-    bitwize_or(s,token)     || 
-    bitwize_xor(s,token)    || 
-    bitwize_not(s,token)    ||
+    bitwize_and(s,token)   || 
+    bitwize_or(s,token)    || 
+    bitwize_xor(s,token)   || 
+    bitwize_not(s,token)   ||
     duplicar (s,token)     || 
     pop_elem (s,token)     ||
     trocar (s,token)       ||
@@ -82,7 +82,6 @@ void handle (STACK *s,char *token){
     input_all (s, token)   || // Acima das vars
     vars (s, token)        ||
     vars2p (s, token)      ||
-    strings (s, token)     ||
     range (s, token)       ||
     num (s,token)) {return;} // Deixar no fim
 }

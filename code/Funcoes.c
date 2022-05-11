@@ -157,20 +157,20 @@ int debugger (STACK *s, char *token) {
             }
         handle(s,token);
         }
-
         return 1;
     }
     return 0;
 }
 
 int vars (STACK *s,char *token) {
-    if (strlen(token) == 1 && isalpha (token[0]) != 0) {
+    if (strlen(token) == 1 && token[0]>='A' && token[0]<='Z') {
         tipos aux ;
         int vall = ((int) token[0])-65 ;
         aux.tipo = s->var[vall].tipo;
-        if (aux.tipo==tLong){aux.val.l=s->var[vall].val.l;}
-        if (aux.tipo==tDouble){aux.val.d=s->var[vall].val.d;}
-        if (aux.tipo==tChar){aux.val.c=s->var[vall].val.c;}
+        if (aux.tipo==tLong) {aux.val.l=s->var[vall].val.l;}
+        if (aux.tipo==tDouble) {aux.val.d=s->var[vall].val.d;}
+        if (aux.tipo==tChar) {aux.val.c=s->var[vall].val.c;}
+        if (aux.tipo==tStr) {aux.val.s=s->var[vall].val.s;}
         push(s,aux);
         return 1;
     }
@@ -180,7 +180,7 @@ int vars (STACK *s,char *token) {
 int vars2p (STACK *s,char *token) {
     if (strlen(token) == 2 && ':'==token[0] && isalpha (token[1]) != 0 )  {
         int vall = ((int) token[1]) - 65;
-        s->var[vall]=s->pilha[s->topo];
+        s->var[vall] = s->pilha[s->topo];
         return 1;
     }
     return 0;

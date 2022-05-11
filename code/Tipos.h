@@ -99,7 +99,7 @@ int conjuncao ();
 int disjuncao ();
 
 // ------------------- ARRAYS.C -------------------
-int strings ();
+void removeAspas();
 int range ();
 int input_all();
 void concatenar();
@@ -112,4 +112,10 @@ void buscar_fim();
 void array_to_stack();
 void substring();
 
+// ------------------- STRINGS.C -------------------
+void handle_string();
+void string_2a();
+void string_1a();
+int aspas();
+void limpa();
 #endif // TIPOS_H
