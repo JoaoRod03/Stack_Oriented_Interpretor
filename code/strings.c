@@ -44,7 +44,9 @@ void string_2a (STACK *s, char *token) {
     tipos aux; aux.tipo=tStr;
     aux.val.s = (char*) malloc((size+1)*sizeof(char));
 
-    for (int i=1; i<size-1; i++) {str[i-1] = token[i];}
+    int i;
+    for (i=1; i<size-1; i++) {str[i-1] = token[i];}
+    str[i-1]='\0';
     strcpy(aux.val.s, str);
 
     push(s,aux);

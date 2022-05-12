@@ -14,7 +14,6 @@
 * Contém a função main e importa os restantes modulos.
 */
 
-
 // Bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,7 +21,6 @@
 #include <math.h>
 #include "Tipos.h"
  
-
 /// Função principal main responsavél por receber o input do utilizador e chamar o handler
 int main() {
     STACK *stack = nova();
@@ -36,7 +34,7 @@ int main() {
     // Input 
     if (fgets(line,BUFSIZ,stdin)!= NULL) {
         while (sscanf(line,"%s %[^\n]",token,line) == 2) {
-                if (aspas(token)>0) {handle_string(stack,token,line);} else {
+                if (aspas(token)>0) {handle_string(arr_alvo,token,line);} else {
                     // Verificar token de array
                     if (strcmp(token,"[") == 0) {arr_alvo = criarArray(arr_alvo); arr_num++;} 
                     if (strcmp(token,"]") == 0) {arr_num--;} 
@@ -49,16 +47,16 @@ int main() {
 
                     // Handle
                     if (strcmp(token,"[") != 0 && strcmp(token,"]") != 0) {
-                        handle(arr_alvo,token);
+                        handle(arr_alvo,token,stack);
                     }
                 }
         }
 
         if (line[0]) {
-            if (aspas(token)>0) {
-                handle_string(stack,token,line);
-            } else {
-                if (strcmp(token,"[") != 0 && strcmp(token,"]") != 0) {handle(arr_alvo,token);}
+            if (aspas(token)>0) {handle_string(arr_alvo,token,line);} else {
+                if (strcmp(token,"[") != 0 && strcmp(token,"]") != 0) {
+                    handle(arr_alvo,token,stack);
+                }
             }
         }
         

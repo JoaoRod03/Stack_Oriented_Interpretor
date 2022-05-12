@@ -46,7 +46,7 @@ STACK* nova() {
 *   @param [in] Stack
 *   @param [in] Token
 */ 
-void handle (STACK *s,char *token){
+void handle (STACK* s, char* token, STACK* raiz) {
     if (
     soma (s,token)         || 
     menos (s,token)        || 
@@ -80,9 +80,9 @@ void handle (STACK *s,char *token){
     conjuncao (s, token)   ||
     disjuncao (s, token)   ||
     input_all (s, token)   || // Acima das vars
-    vars (s, token)        ||
-    vars2p (s, token)      ||
-    range (s, token)       ||
+    vars (raiz, token)        ||
+    vars2p (s, token, raiz)||
+    range (s, token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 

@@ -103,6 +103,7 @@ int divide (STACK *s,char *token) {
             if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = (double) t1.val.l / t2.val.d;}
             if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = t1.val.d / (double) t2.val.l;}
             if (t1.tipo==0 && t2.tipo==0) {aux.tipo=tLong; aux.val.l = t1.val.l / t2.val.l;}
+            push(s,aux);
         }
 
         // Strings (Procurar substring)
@@ -110,7 +111,6 @@ int divide (STACK *s,char *token) {
             substring(s,t1,t2);
         }
 
-        push(s,aux);
         return 1;
     }
     return 0;

@@ -120,26 +120,6 @@ void concatenar (STACK* s, tipos t1, tipos t2) {
     }
 
     // Arrays e strings (Concatenar)
-    /*
-    if (t1.tipo==tStr && t2.tipo==tArr) {
-        tipos aux;
-        aux.tipo=tChar;
-        int size1 = strlen(t1.val.s);
-        int size = t2.val.arr->topo;
-        
-        for (int i=0; i<size1-2; i++) {t2.val.arr->topo++;} // obter espaço no arr
-        for (int i=size+1; i>0; i--) {
-            t2.val.arr->pilha[i+size1] = t2.val.arr->pilha[i];
-        }
-        for (int i=0; i<size1; i++) {
-            aux.val.c = t1.val.s[i];
-            t2.val.arr->pilha[i]=t1;
-        }
-        push(s,t2);
-    }
-    */
-
-    // Arrays e strings (Concatenar)
     if (t1.tipo==tArr && t2.tipo==tStr) {
         tipos aux;
         aux.tipo=tChar;
@@ -359,7 +339,7 @@ void substring (STACK* s, tipos t1, tipos t2) {
             if (i==size1-1) {i++;} // Copiar o que está no fim.
             int z=0;
             tipos aux; aux.tipo=tStr;
-            aux.val.s = (char*) malloc(1000*sizeof(char));
+            aux.val.s = (char*) malloc(100*sizeof(char));
             for (z=0; z<(i-startCopia); z++) {    
                 aux.val.s[z] = t1.val.s[z+startCopia];
             }
