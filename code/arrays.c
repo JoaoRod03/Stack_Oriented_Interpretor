@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <math.h>
-//#include <ctype.h>
+#include <math.h>
+#include <ctype.h>
 #include "Tipos.h"
 
 
@@ -26,11 +26,10 @@ int range (STACK *s, char *token) {
             tipos valor;
             aux.tipo = tArr;
             aux.val.arr=nova();
-            int x = t1.val.l ;
+            int x = t1.val.l;
 
             for (int i = 0 ; i < x; i++ ) {
-                valor.tipo=tLong
-                ;
+                valor.tipo=tLong;
                 valor.val.l = i;
                 push(aux.val.arr, valor);
             }
@@ -331,6 +330,7 @@ void array_to_stack (STACK* s, tipos t1) {
         }
     }
 }
+
 void sub_igual (STACK* s, tipos t1, tipos t2) {
     tipos aux;aux.val.l=-1;
     aux.tipo=tLong;
@@ -350,6 +350,7 @@ void sub_igual (STACK* s, tipos t1, tipos t2) {
 
     push(s, aux);
 }
+
 void substring (STACK* s, tipos t1, tipos t2) {
     int i=0, startCopia=0;
 

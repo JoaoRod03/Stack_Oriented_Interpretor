@@ -7,7 +7,7 @@
 #define TIPOS_H
 
 // Configs
-#define STACK_SIZE 1000 ///< Constante que define o tamanho da stack
+#define STACK_SIZE 20000 ///< Constante que define o tamanho da stack
 
 
 /////////////////////////// TIPOS -> STRUCTS -> STACK ///////////////////////////
@@ -16,18 +16,17 @@ typedef enum {
     tLong,    // Valor 0
     tDouble,  // Valor 1
     tChar,    // Valor 2
-    tStr,     // Valor 3
-    tArr,
-    tBlo// Valor 4
+    tStr,     // Valor 3    
+    tArr,     // Valor 4
+    tBlc      // Valor 5 
 } Enum_tipo;
 
 /// União responsavel por oferecer á stack varios tipos.
 typedef union un {
-    long l;          // Long
-    double d;        // Double
-    char c;          // Char
-    char* s;
-    struct stack *blo;
+    long l;            // Long
+    double d;          // Double
+    char c;            // Char
+    char* s;           // String e blocos
     struct stack *arr; // Array
 } Uniao_tipos;
 
@@ -55,7 +54,7 @@ int vars ();
 int vars2p ();
 void printStack();
 STACK* criarArray();
-STACK* criarBloco();
+char* criarBloco();
 
 
 // ------------------- FUNCOES.C -------------------

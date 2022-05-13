@@ -94,11 +94,12 @@ STACK* criarArray (STACK *s) {
     s->pilha[s->topo].val.arr = nova();
     return s->pilha[s->topo].val.arr;
 }
-STACK* criarBloco (STACK *s) {
+
+char* criarBloco (STACK *s, int size) {
     s->topo++;
-    s->pilha[s->topo].tipo = tBlo;
-    s->pilha[s->topo].val.blo = nova();
-    return s->pilha[s->topo].val.blo;
+    s->pilha[s->topo].tipo = tBlc;
+    s->pilha[s->topo].val.s = (char*) malloc((size+1)*sizeof(char));;
+    return s->pilha[s->topo].val.s;
 }
 
 void printStack (STACK *s) {
@@ -108,12 +109,13 @@ void printStack (STACK *s) {
         if (s->pilha[i].tipo == tChar) {printf("%c",s->pilha[i].val.c);} 
         if (s->pilha[i].tipo == tStr) {printf("%s",s->pilha[i].val.s);} 
         if (s->pilha[i].tipo == tArr) {printStack(s->pilha[i].val.arr);}
+        if (s->pilha[i].tipo == tBlc) {printf("%s",s->pilha[i].val.s);} 
     }
 }
 
 
 /// Função que trata dos tokens não reconhecidos e constantes, verifica o tipo do token e atribui uma operação.
-int num (STACK *s,char *token) {
+int num (STACK *s, char *token) {
     tipos aux;
     long l1;
     double d1;
@@ -132,7 +134,14 @@ int num (STACK *s,char *token) {
         aux.val.d = d1;
         push(s,aux);
     } else {
-        printf("Erro token desconhecido!\nToken:%s\nOutput:",token);
+        //printf("Erro token desconhecido!\nToken:%s\nOutput:",token);
+        int size = strlen(token);
+        char* aux = (char*) malloc((size+1)*sizeof(char));
+        strcat(aux,".");
+        strcat(aux,token);
+        strcat(aux,".");
+        strcpy(token,aux);
+        string_2a(s,token);
     }
 
     return 1 ;

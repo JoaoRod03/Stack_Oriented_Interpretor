@@ -24,15 +24,15 @@
 /// Função principal main responsavél por receber o input do utilizador e chamar o handler
 int main() {
     STACK *stack = nova();
-    char line[BUFSIZ];
-    char token[BUFSIZ];
+    char line[10000];
+    char token[10000];
     
     // Variaveis auxiliares das funções (Indicam o estado do input)
     STACK* arr_alvo = stack;
     int arr_num=0;
 
     // Input 
-    if (fgets(line,BUFSIZ,stdin)!= NULL) {
+    if (fgets(line,10000,stdin)!= NULL) {
         while (sscanf(line,"%s %[^\n]",token,line) == 2) {
                 if (aspas(token)>0) {handle_string(arr_alvo,token,line);} else {
                     // Verificar token de array

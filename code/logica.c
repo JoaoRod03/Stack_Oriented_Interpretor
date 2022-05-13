@@ -20,6 +20,9 @@ int interroga (STACK *s, char *token) {
 
         if (t1.tipo==tLong) {c1=t1.val.l;} 
         if (t1.tipo==tDouble) {d1=t1.val.d;} 
+        if (t1.tipo==tArr) {
+            if(t1.val.arr->topo > 0) {c1=1;}
+        }
 
         if (c1!=0 || d1!=0) {
             push(s,t2);

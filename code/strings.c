@@ -32,7 +32,7 @@ void string_1a (STACK* s, char* token, char* linha) {
     // Pushar a string
     int tamanho = strlen(strFinal);
     tipos devolve; devolve.tipo = tStr;
-    devolve.val.s=(char*) malloc((tamanho+1)*sizeof(char));
+    devolve.val.s = (char*) malloc((tamanho+1)*sizeof(char));
     strcpy(devolve.val.s, strFinal);
     push(s,devolve);
 }

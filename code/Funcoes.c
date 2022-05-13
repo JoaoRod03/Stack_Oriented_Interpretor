@@ -32,7 +32,7 @@ tipos pop (STACK *s) {
 
 /// Duplica o elemento que se encontra no topo da stack. 
 int duplicar (STACK *s,char *token) {
-    if(strcmp(token, "_") == 0) {  
+    if (strcmp(token, "_") == 0) {  
         tipos t1 = pop(s);
         push(s,t1);
         push(s,t1);
@@ -44,7 +44,7 @@ int duplicar (STACK *s,char *token) {
 
 /// Roda os 3 elementos no topo da stack (123 -> 231).
 int rodar (STACK *s,char *token) {
-    if(strcmp(token, "@") == 0) {
+    if (strcmp(token, "@") == 0) {
         tipos t3 = pop(s);
         tipos t2 = pop(s);
         tipos t1 = pop(s);
@@ -60,7 +60,7 @@ int rodar (STACK *s,char *token) {
 
 /// Retira o elemento que se encontra no topo da stack.
 int pop_elem (STACK *s,char *token) {
-    if(strcmp(token, ";") == 0) {
+    if (strcmp(token, ";") == 0) {
         pop(s);
         return 1;
     }
@@ -69,7 +69,7 @@ int pop_elem (STACK *s,char *token) {
 
 /// Troca os dois elementos do topo da stack
 int trocar (STACK *s,char *token) {
-    if(strcmp(token, "\\") == 0) {
+    if (strcmp(token, "\\") == 0) {
         tipos t2 = pop(s);
         tipos t1 = pop(s);
         
@@ -83,7 +83,7 @@ int trocar (STACK *s,char *token) {
 
 ///  Copia n-ésimo elemento para o topo da stack. (n $)
 int copia (STACK *s,char *token) {
-    if(strcmp(token, "$") == 0) {
+    if (strcmp(token, "$") == 0) {
         int w;
         tipos ultimo;
         tipos* arr = malloc(BUFSIZ*sizeof(tipos));
@@ -117,10 +117,10 @@ int ler (STACK *s, char *token) {
     char line [BUFSIZ] ; 
     if (strcmp(token, "l") == 0) {
         if (fgets(line , BUFSIZ , stdin)) {
-        while (sscanf(line,"%s %[^\n]",token,line) == 2) {
-                handle(s ,token);
-                }
-        handle(s,token);
+            while (sscanf(line,"%s %[^\n]",token,line) == 2) {
+                    handle(s ,token);
+            }
+            handle(s,token);
         }
 
         return 1;
