@@ -81,6 +81,7 @@ int mul (STACK *s,char *token) {
 
         // Arrays,Strings (Concatenar varias vezes)
         if (t1.tipo==tStr || t2.tipo==tStr || t1.tipo==tArr || t2.tipo==tArr) {
+
             concatenar_mul(s,t1,t2);
         }
 
@@ -144,7 +145,10 @@ int expo (STACK *s,char *token) {
 
         t2 = pop(s);
         t1 = pop(s);
-        
+        if (t1.tipo==tStr && t2.tipo==tStr){
+            sub_igual(s,t1,t2);
+            return 1;
+        }
         if (t1.tipo==1 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = pow(t1.val.d, t2.val.d);}
         if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = pow(t1.val.l, t2.val.d);}
         if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = pow(t1.val.d, t2.val.l);}

@@ -83,6 +83,7 @@ void handle (STACK* s, char* token, STACK* raiz) {
     vars (raiz, token)        ||
     vars2p (s, token, raiz)||
     range (s, token) ||
+    div_whitespace (s, token) ||
     num (s,token)) {return;} // Deixar no fim
 }
 
@@ -92,8 +93,13 @@ STACK* criarArray (STACK *s) {
     s->pilha[s->topo].tipo = tArr;
     s->pilha[s->topo].val.arr = nova();
     return s->pilha[s->topo].val.arr;
-}        
-
+}
+STACK* criarBloco (STACK *s) {
+    s->topo++;
+    s->pilha[s->topo].tipo = tBlo;
+    s->pilha[s->topo].val.blo = nova();
+    return s->pilha[s->topo].val.blo;
+}
 
 void printStack (STACK *s) {
     for (int i=1; i<=(s->topo); i++) { 

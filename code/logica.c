@@ -37,7 +37,10 @@ int mai(STACK *s,char *token) {
         tipos t1,t2,aux;
         t2 = pop(s);
         t1 = pop(s);
-
+        if (t1.tipo == tStr && t2.tipo == tLong) {
+            buscar_fim(s,t1,t2);
+            return 1;
+        }
         // Numeros reais (Comparação maior)
         if (t1.tipo==tLong || t1.tipo==tDouble || t2.tipo==tLong || t2.tipo==tDouble) {
             aux.tipo=tLong;
@@ -66,6 +69,10 @@ int men(STACK *s, char *token) {
         t2 = pop(s);
         t1 = pop(s);
 
+        if (t1.tipo == tStr && t2.tipo == tLong) {
+            buscar_inicio(s,t1,t2);
+            return 1;
+        }
         // Numeros reais (Comparação menor)
         if (t1.tipo==tLong || t1.tipo==tDouble || t2.tipo==tLong || t2.tipo==tDouble) {
             aux.tipo=tLong;

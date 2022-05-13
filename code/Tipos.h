@@ -17,7 +17,8 @@ typedef enum {
     tDouble,  // Valor 1
     tChar,    // Valor 2
     tStr,     // Valor 3
-    tArr      // Valor 4     
+    tArr,
+    tBlo// Valor 4
 } Enum_tipo;
 
 /// União responsavel por oferecer á stack varios tipos.
@@ -25,7 +26,8 @@ typedef union un {
     long l;          // Long
     double d;        // Double
     char c;          // Char
-    char* s;         // String
+    char* s;
+    struct stack *blo;
     struct stack *arr; // Array
 } Uniao_tipos;
 
@@ -53,6 +55,7 @@ int vars ();
 int vars2p ();
 void printStack();
 STACK* criarArray();
+STACK* criarBloco();
 
 
 // ------------------- FUNCOES.C -------------------
@@ -110,6 +113,7 @@ void buscar_indice();
 void buscar_inicio();
 void buscar_fim();
 void array_to_stack();
+void sub_igual();
 void substring();
 
 // ------------------- STRINGS.C -------------------
@@ -118,4 +122,5 @@ void string_2a();
 void string_1a();
 int aspas();
 void limpa();
+int div_whitespace ();
 #endif // TIPOS_H

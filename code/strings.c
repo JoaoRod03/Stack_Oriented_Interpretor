@@ -72,4 +72,28 @@ int aspas (char* token) {
     return aspas;
 }
 
-// Remove os x primeiros elementos
+
+int div_whitespace (STACK *s, char* token) {
+    if(strcmp(token, "S/") == 0) {
+        tipos line = pop(s);
+
+        if (line.tipo==tStr) {
+            char word[BUFSIZ];
+            tipos array; array.tipo=tArr; array.val.arr=nova();
+            tipos strAux; strAux.tipo=tStr;
+
+            int i=0;
+            while (i!=-1) {
+                if (sscanf(line.val.s,"%s %[^\n]", word, line.val.s) != 2) {i=-2;}
+                strAux.val.s=(char*) malloc((strlen(word)+1)*sizeof(char));
+                strcpy(strAux.val.s, word);
+                push(array.val.arr,strAux);
+                i++;
+            }
+
+            push(s,array);
+            return 1;
+        }
+    }
+    return 0;
+}

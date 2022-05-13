@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-#include <ctype.h>
+//#include <math.h>
+//#include <ctype.h>
 #include "Tipos.h"
 
 
@@ -263,7 +263,15 @@ void buscar_indice (STACK* s, tipos t1, tipos t2) {
 
 void buscar_inicio (STACK* s, tipos t1, tipos t2) { 
     tipos aux;
-
+    if (t1.tipo == tStr && t2.tipo == tLong) {
+        tipos aux;
+        aux.tipo=tStr;
+        aux.val.s = (char*) malloc(t2.val.l*sizeof(char));
+        for (int i = 0; i < t2.val.l; i++) {
+            aux.val.s[i]=t1.val.s[i];
+        }
+        push(s,aux);
+    }
     // Buscar x carateres ao inicio
     if (t1.tipo == tStr && t2.tipo == tStr) {
            aux.tipo=tLong;
@@ -281,6 +289,16 @@ void buscar_fim (STACK* s, tipos t1, tipos t2) {
     tipos aux;
 
     // Buscar x carateres ao fim
+    if (t1.tipo == tStr && t2.tipo == tLong) {
+        int size = strlen(t1.val.s);
+        tipos aux;
+        aux.tipo=tStr;
+        aux.val.s = (char*) malloc(t2.val.l*sizeof(char));
+        for (int i = 0; i < t2.val.l; i++) {
+            aux.val.s[i]=t1.val.s[size-t2.val.l+i];
+        }
+        push(s,aux);
+    }
     if (t1.tipo == tStr && t2.tipo == tStr) {
         aux.tipo=tLong;
         int size=strlen(t2.val.s);
@@ -313,7 +331,25 @@ void array_to_stack (STACK* s, tipos t1) {
         }
     }
 }
+void sub_igual (STACK* s, tipos t1, tipos t2) {
+    tipos aux;aux.val.l=-1;
+    aux.tipo=tLong;
+    int t = 0;
+    // Tamanho das strings
+    int size1 = strlen(t1.val.s); // string
+    int size2 = strlen(t2.val.s); // substring
+    for (int i = 0; i < size1; i++) {
+        if  (t1.val.s[i]==t2.val.s[0]){
+            t=1;
+            for (int j = 1; j < size2; j++) {
+                if  (t1.val.s[j+i]!=t2.val.s[j])t=0;
+            }
+            if (t==1)aux.val.l=i;
+        }
+    }
 
+    push(s, aux);
+}
 void substring (STACK* s, tipos t1, tipos t2) {
     int i=0, startCopia=0;
 
@@ -337,10 +373,9 @@ void substring (STACK* s, tipos t1, tipos t2) {
         // Se o tamanho dos carateres iguais for igual ao da 2 string vamos copiar para o array.
         if (iguais==size2 || i==size1-1) {
             if (i==size1-1) {i++;} // Copiar o que está no fim.
-            int z=0;
             tipos aux; aux.tipo=tStr;
             aux.val.s = (char*) malloc(100*sizeof(char));
-            for (z=0; z<(i-startCopia); z++) {    
+            for (int z=0; z<(i-startCopia); z++) {
                 aux.val.s[z] = t1.val.s[z+startCopia];
             }
             // Copiar para o array
