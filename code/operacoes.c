@@ -81,8 +81,12 @@ int mul (STACK *s,char *token) {
 
         // Arrays,Strings (Concatenar varias vezes)
         if (t1.tipo==tStr || t2.tipo==tStr || t1.tipo==tArr || t2.tipo==tArr) {
-
             concatenar_mul(s,t1,t2);
+        }
+
+        // Blocos (Fold)
+        if ((t1.tipo==tArr && t2.tipo==tBlc) || (t1.tipo==tStr && t2.tipo==tBlc)) {
+            fold(s,t1,t2);
         }
 
         return 1;

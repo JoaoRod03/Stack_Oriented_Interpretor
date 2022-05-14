@@ -43,8 +43,8 @@ void executarBloco (STACK* stack, tipos t1) {
     }
 }   
 
-// Aplica um bloco a um array ou string
-void blocoAplicar (STACK* s, tipos t1, tipos t2) {
+// Aplica um bloco a um array ou string (t2->bloco) (t1->arr)
+void blocoAplicar (STACK* s, tipos t1, tipos bloco) {
     if (t1.tipo==tArr) {
         tipos temp[BUFSIZ];
         int size = t1.val.arr->topo;
@@ -52,13 +52,56 @@ void blocoAplicar (STACK* s, tipos t1, tipos t2) {
         for (int i=0; i<size; i++) {
             temp[i]=pop(t1.val.arr);
         }
-        pop(t1.val.arr); // Pop do 0
 
-        for (int i=size; i>=0; i--) {
+        for (int i=size-1; i>=0; i--) {
             push(t1.val.arr, temp[i]);
-            executarBloco(t1.val.arr, t2);
+            executarBloco(t1.val.arr, bloco);
         }
-        printStack(t1.val.arr);
+        push(s,t1);
     }
-    push(s,t1.val.arr);
 }   
+
+// Aplica um bloco a um array 
+void fold (STACK* s, tipos t1, tipos bloco) {
+    if (t1.tipo==tArr) {
+        tipos temp[BUFSIZ];
+        int size = t1.val.arr->topo;
+
+        for (int i=0; i<size; i++) {
+            temp[i]=pop(t1.val.arr);
+        }
+
+        push(t1.val.arr, temp[0]);
+        push(t1.val.arr, temp[1]);
+        executarBloco(t1.val.arr, bloco);
+
+        for (int i=2; i<size; i++) {
+            push(t1.val.arr, temp[i]);
+            executarBloco(t1.val.arr, bloco);
+        }
+        array_to_stack(s, t1);
+    }
+}   
+
+// Filtra um array
+void filter (STACK* s, tipos t1, tipos bloco) {
+    if (t1.tipo==tArr) {
+        tipos temp[BUFSIZ];
+        int size = t1.val.arr->topo;
+
+        for (int i=0; i<size; i++) {
+            temp[i]=pop(t1.val.arr);
+        }
+
+        for (int i=size-1; i>=0; i--) {
+            push(t1.val.arr, temp[i]);
+            executarBloco(t1.val.arr, bloco);
+        }
+        
+        for (int i=1; i<size+1; i++) {
+            if (t1.val.arr->pilha[i].val.l > 0) {
+                push(s,temp[size-i]);
+            }
+        }
+    }
+} 

@@ -126,4 +126,6 @@ int div_whitespace ();
 // ------------------- BLOCOS.C -------------------
 void executarBloco();
 void blocoAplicar();
+void fold();
+void filter();
 #endif // TIPOS_H

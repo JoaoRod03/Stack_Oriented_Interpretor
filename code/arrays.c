@@ -45,6 +45,14 @@ int range (STACK *s, char *token) {
             push(s,aux);
         }
 
+        // Blocos filtrar um array
+        if (t1.tipo == tBlc) {
+            tipos t2 = pop(s);
+            if (t2.tipo==tArr) {
+                filter(s,t2,t1);
+            }
+        }
+
         return 1;
     }
     return 0 ;
@@ -332,19 +340,21 @@ void array_to_stack (STACK* s, tipos t1) {
 }
 
 void sub_igual (STACK* s, tipos t1, tipos t2) {
-    tipos aux;aux.val.l=-1;
+    tipos aux; aux.val.l=-1;
     aux.tipo=tLong;
     int t = 0;
+
     // Tamanho das strings
     int size1 = strlen(t1.val.s); // string
     int size2 = strlen(t2.val.s); // substring
+
     for (int i = 0; i < size1; i++) {
-        if  (t1.val.s[i]==t2.val.s[0]){
+        if (t1.val.s[i]==t2.val.s[0]) {
             t=1;
             for (int j = 1; j < size2; j++) {
-                if  (t1.val.s[j+i]!=t2.val.s[j])t=0;
+                if (t1.val.s[j+i]!=t2.val.s[j]) {t=0;}
             }
-            if (t==1)aux.val.l=i;
+            if (t==1) {aux.val.l=i;}
         }
     }
 
@@ -359,7 +369,7 @@ void substring (STACK* s, tipos t1, tipos t2) {
     int size2=strlen(t2.val.s);
     
     // Array
-    tipos array; array.tipo=tArr; array.val.arr=nova();
+    tipos array; array.tipo=tArr; array.val.arr = nova();
 
 
     // Percorrer primeira string de 0 ate size1
