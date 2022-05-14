@@ -124,13 +124,19 @@ int resto (STACK *s,char *token) {
 
         t2 = pop(s);
         t1 = pop(s);
-        
-        if (t1.tipo==1 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = (long) t1.val.d % (long) t2.val.d;}
-        if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = t1.val.l % (long) t2.val.d;}
-        if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = (long) t1.val.d % t2.val.l;}
-        if (t1.tipo==0 && t2.tipo==0) {aux.tipo=tLong; aux.val.l = t1.val.l % t2.val.l;}
 
-        push(s,aux);
+        // Numero reais (Soma)
+        if (((t1.tipo==tLong || t1.tipo==tDouble ) && (t2.tipo==tDouble || t2.tipo==tLong))) {
+            if (t1.tipo==1 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = (long) t1.val.d % (long) t2.val.d;}
+            if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = t1.val.l % (long) t2.val.d;}
+            if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = (long) t1.val.d % t2.val.l;}
+            if (t1.tipo==0 && t2.tipo==0) {aux.tipo=tLong; aux.val.l = t1.val.l % t2.val.l;}
+            push(s,aux);
+        }
+
+        if ((t1.tipo==tArr && t2.tipo==tBlc) || (t1.tipo==tStr && t2.tipo==tBlc)) {
+            blocoAplicar(s,t1,t2);
+        }
 
         return 1;
     }
@@ -145,10 +151,12 @@ int expo (STACK *s,char *token) {
 
         t2 = pop(s);
         t1 = pop(s);
+
         if (t1.tipo==tStr && t2.tipo==tStr){
             sub_igual(s,t1,t2);
             return 1;
         }
+
         if (t1.tipo==1 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = pow(t1.val.d, t2.val.d);}
         if (t1.tipo==0 && t2.tipo==1) {aux.tipo=tDouble; aux.val.d = pow(t1.val.l, t2.val.d);}
         if (t1.tipo==1 && t2.tipo==0) {aux.tipo=tDouble; aux.val.d = pow(t1.val.d, t2.val.l);}

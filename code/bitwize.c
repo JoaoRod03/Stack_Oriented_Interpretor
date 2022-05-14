@@ -58,6 +58,9 @@ int bitwize_not (STACK *s,char *token) {
         // Arrays (Coloca na stack os elementos do array)
         if (t1.tipo==tArr) {array_to_stack(s,t1);}
 
+        // Blocos (Executar bloco)
+        if (t1.tipo==tBlc) {executarBloco(s,t1);}
+
         return 1;
     }
     return 0;

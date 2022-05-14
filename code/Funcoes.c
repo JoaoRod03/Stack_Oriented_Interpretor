@@ -171,6 +171,7 @@ int vars (STACK *s, char *token) {
         if (aux.tipo==tDouble) {aux.val.d = s->var[vall].val.d;}
         if (aux.tipo==tChar) {aux.val.c = s->var[vall].val.c;}
         if (aux.tipo==tStr) {aux.val.s = s->var[vall].val.s;}
+        if (aux.tipo==tBlc) {aux.val.s = s->var[vall].val.s;}
         push(s,aux);
         return 1;
     }

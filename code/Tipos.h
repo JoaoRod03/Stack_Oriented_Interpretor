@@ -55,7 +55,7 @@ int vars2p ();
 void printStack();
 STACK* criarArray();
 char* criarBloco();
-
+void associaBloco();
 
 // ------------------- FUNCOES.C -------------------
 void push ();       /// Função que insere um elemento no topo da stack. 
@@ -122,4 +122,8 @@ void string_1a();
 int aspas();
 void limpa();
 int div_whitespace ();
+
+// ------------------- BLOCOS.C -------------------
+void executarBloco();
+void blocoAplicar();
 #endif // TIPOS_H

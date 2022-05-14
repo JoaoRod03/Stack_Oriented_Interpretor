@@ -81,12 +81,12 @@ void handle (STACK* s, char* token, STACK* raiz) {
     disjuncao (s, token)   ||
     input_all (s, token)   || // Acima das vars
     vars (raiz, token)        ||
-    vars2p (s, token, raiz)||
-    range (s, token) ||
+    vars2p (s, token, raiz)   ||
+    range (s, token)          ||
     div_whitespace (s, token) ||
-    num (s,token)) {return;} // Deixar no fim
+    num (s,token)
+    ) {return;} // Deixar no fim
 }
-
 
 STACK* criarArray (STACK *s) {
     s->topo++;
@@ -95,11 +95,25 @@ STACK* criarArray (STACK *s) {
     return s->pilha[s->topo].val.arr;
 }
 
-char* criarBloco (STACK *s, int size) {
+char* criarBloco (STACK *s, char* bloco, int size) {
     s->topo++;
     s->pilha[s->topo].tipo = tBlc;
-    s->pilha[s->topo].val.s = (char*) malloc((size+1)*sizeof(char));;
+    s->pilha[s->topo].val.s = (char*) malloc((size+1)*sizeof(char));
+    s->pilha[s->topo].val.s = bloco;
     return s->pilha[s->topo].val.s;
+}
+
+void associaBloco (STACK* s, char* line) {
+    char bloco[BUFSIZ];
+    int chavetas=0, i=0;
+    while ((chavetas!=0 || line[i]!='}') && line[i]!='\0') {
+        if (line[i]=='{') {chavetas++;}
+        if (line[i]=='}') {chavetas--;}
+        bloco[i]=line[i];
+        i++;
+    }
+    limpa(line,i+1);
+    criarBloco (s,bloco,i);
 }
 
 void printStack (STACK *s) {
@@ -109,7 +123,11 @@ void printStack (STACK *s) {
         if (s->pilha[i].tipo == tChar) {printf("%c",s->pilha[i].val.c);} 
         if (s->pilha[i].tipo == tStr) {printf("%s",s->pilha[i].val.s);} 
         if (s->pilha[i].tipo == tArr) {printStack(s->pilha[i].val.arr);}
-        if (s->pilha[i].tipo == tBlc) {printf("%s",s->pilha[i].val.s);} 
+        if (s->pilha[i].tipo == tBlc) {
+            printf("{ ");
+            printf("%s",s->pilha[i].val.s);
+            printf("}");
+        } 
     }
 }
 

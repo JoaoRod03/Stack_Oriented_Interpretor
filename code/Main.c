@@ -35,27 +35,31 @@ int main() {
     if (fgets(line,10000,stdin)!= NULL) {
         while (sscanf(line,"%s %[^\n]",token,line) == 2) {
                 if (aspas(token)>0) {handle_string(arr_alvo,token,line);} else {
-                    // Verificar token de array
-                    if (strcmp(token,"[") == 0) {arr_alvo = criarArray(arr_alvo); arr_num++;} 
-                    if (strcmp(token,"]") == 0) {arr_num--;} 
+                    if (strcmp(token,"{") == 0) {associaBloco(stack,line);} else {
+                        // Verificar token de array
+                        if (strcmp(token,"[") == 0) {arr_alvo = criarArray(arr_alvo); arr_num++;} 
+                        if (strcmp(token,"]") == 0) {arr_num--;} 
 
-                    // Aceder ao array
-                    arr_alvo = stack;
-                    for (int i=0; i<arr_num; i++) {
-                        arr_alvo = arr_alvo->pilha[arr_alvo->topo].val.arr;
-                    }
+                        // Aceder ao array
+                        arr_alvo = stack;
+                        for (int i=0; i<arr_num; i++) {
+                            arr_alvo = arr_alvo->pilha[arr_alvo->topo].val.arr;
+                        }
 
-                    // Handle
-                    if (strcmp(token,"[") != 0 && strcmp(token,"]") != 0) {
-                        handle(arr_alvo,token,stack);
+                        // Handle
+                        if (strcmp(token,"[") != 0 && strcmp(token,"]") != 0) {
+                            handle(arr_alvo,token,stack);
+                        }
                     }
                 }
         }
 
         if (line[0]) {
             if (aspas(token)>0) {handle_string(arr_alvo,token,line);} else {
-                if (strcmp(token,"[") != 0 && strcmp(token,"]") != 0) {
-                    handle(arr_alvo,token,stack);
+                if (strcmp(token,"{") == 0) {associaBloco(stack,line);} else {
+                    if (strcmp(token,"[") != 0 && strcmp(token,"]") != 0) {
+                        handle(arr_alvo,token,stack);
+                    }
                 }
             }
         }
