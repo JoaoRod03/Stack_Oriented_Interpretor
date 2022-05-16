@@ -38,9 +38,9 @@ typedef struct ru {
 
 /// Struct da stack, constituido por um array que armazena os valores da stack e um apontador para o topo desta.
 typedef struct stack {
-    tipos pilha [STACK_SIZE]; 
-    tipos var [30];
-    int topo;
+    tipos pilha [STACK_SIZE];   // O array de tipos que guarda os valores da stack.
+    tipos var [30];             // Array que guarda os valores das variáveis.
+    int topo;                   // Indica onde se encontra o topo da stack.
 } STACK;
 
 
@@ -116,12 +116,12 @@ void sub_igual();
 void substring();
 
 // ------------------- STRINGS.C -------------------
-void handle_string();
-void string_2a();
-void string_1a();
-int aspas();
-void limpa();
-int div_whitespace ();
+void handle_string();   /// Função responsável pelo handle das strings inseridas pelo utilizador.
+void string_1a();       /// Função reponsável tratar das strings com espaços. 
+void string_2a();       /// Função que recebe uma string sem espaços e dá push desta para a stack/array correspondente.
+void limpa();           /// Função que elemina os primeiros x elementos de uma string.
+int aspas();            /// Função que dado um token devolve o numero de aspas que este possui.
+int div_whitespace ();  /// Função que divide uma string por cada whitespace existente, colocando as strings entre estes num array.
 
 // ------------------- BLOCOS.C -------------------
 void executarBloco();

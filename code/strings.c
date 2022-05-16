@@ -8,12 +8,15 @@
 
 //\/\/\/\/\/\/\/\/\/\/\/|---->  STRINGS <-----|/\/\/\/\/\/\/\/\/\/\/\/
 
+/// Função responsável pelo handle das strings inseridas pelo utilizador.
 void handle_string (STACK* s, char* token, char* linha) {
     if (aspas(token)==2) {string_2a(s,token);}
     if (aspas(token)==1) {string_1a(s,token,linha);}
 }
 
-// Dá push 
+/** Função reponsável por concatenar os tokens de uma string com espaços, e dá push dá string completa para a stack/array correspondente.
+*   Recebe o token inicial que só possui 1 aspa e a restante linha.
+*/ 
 void string_1a (STACK* s, char* token, char* linha) {
     limpa(token,1);
     char strFinal [BUFSIZ];         // String final
@@ -37,7 +40,7 @@ void string_1a (STACK* s, char* token, char* linha) {
     push(s,devolve);
 }
 
-/// Dá push de uma string do tipo ("token")
+/// Função que recebe uma string sem espaços e dá push desta para a stack/array correspondente.
 void string_2a (STACK *s, char *token) {
     int size = strlen(token);
     char str[BUFSIZ];  
@@ -52,6 +55,7 @@ void string_2a (STACK *s, char *token) {
     push(s,aux);
 }
 
+/// Função que elemina os primeiros x elementos de uma string.
 void limpa (char* linha ,int indice) {
     int i,s = strlen(linha);
     for (i = 0; i <s-indice; i++) {
@@ -61,8 +65,7 @@ void limpa (char* linha ,int indice) {
     if (*(linha-1+i)!='"') {*(linha+i)='\0';}
 }
 
-
-// Fornece o numero de aspas
+/// Função que dado um token devolve o numero de aspas que este possui.
 int aspas (char* token) {
     int size=strlen(token);
     int aspas=0;
@@ -72,7 +75,7 @@ int aspas (char* token) {
     return aspas;
 }
 
-
+/// Função que divide uma string por cada whitespace existente, colocando as strings entre estes num array.
 int div_whitespace (STACK *s, char* token) {
     if(strcmp(token, "S/") == 0) {
         tipos line = pop(s);
