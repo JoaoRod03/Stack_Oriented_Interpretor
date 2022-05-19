@@ -1,3 +1,8 @@
+/**
+* @file conversoes.c
+* Ficheiro .c que contém as funções que tratam das conversões de tipos.
+*/
+
 // Bibliotecas
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,7 +1,7 @@
 /**
-* @file handler.c
-* Ficheiro .c que contém as funções principais utilizadas no projeto.
-*/
+ * @file handler.c
+ * Ficheiro .c que contém as funções principais utilizadas no projeto.
+ */
 
 // Bibliotecas
 #include <stdio.h>
@@ -91,6 +91,7 @@ void handle (STACK* s, char* token, STACK* raiz) {
     ) {return;} // Deixar no fim
 }
 
+/// Função responsável por criar a stack.
 STACK* criarArray (STACK *s) {
     s->topo++;
     s->pilha[s->topo].tipo = tArr;
@@ -98,6 +99,7 @@ STACK* criarArray (STACK *s) {
     return s->pilha[s->topo].val.arr;
 }
 
+/// Função responsável por criar um bloco.
 char* criarBloco (STACK *s, char* bloco, int size) {
     s->topo++;
     s->pilha[s->topo].tipo = tBlc;
@@ -106,6 +108,7 @@ char* criarBloco (STACK *s, char* bloco, int size) {
     return s->pilha[s->topo].val.s;
 }
 
+/// Função que associa um bloco.
 void associaBloco (STACK* s, char* line) {
     char bloco[BUFSIZ];
     int chavetas=0, i=0;
@@ -119,6 +122,7 @@ void associaBloco (STACK* s, char* line) {
     criarBloco (s,bloco,i);
 }
 
+/// Função responsável para dar print à stack.
 void printStack (STACK *s) {
     for (int i=1; i<=(s->topo); i++) { 
         if (s->pilha[i].tipo == tLong) {printf("%ld",s->pilha[i].val.l);} 
@@ -133,7 +137,6 @@ void printStack (STACK *s) {
         } 
     }
 }
-
 
 /// Função que trata dos tokens não reconhecidos e constantes, verifica o tipo do token e atribui uma operação.
 int num (STACK *s, char *token) {
@@ -168,7 +171,6 @@ int num (STACK *s, char *token) {
     return 1 ;
 }
 
-
 /// Devolve o tipo do topo da stack
 int topo_tipo (STACK *s) {
     int r;
@@ -176,3 +178,29 @@ int topo_tipo (STACK *s) {
     return r;
 }
 
+/// Função que lida com as variáveis.
+int vars (STACK *s, char *token) {
+    if (strlen(token) == 1 && token[0]>='A' && token[0]<='Z') {
+        tipos aux ;
+        int vall = ((int) token[0])-65 ;
+        aux.tipo = s->var[vall].tipo;
+        if (aux.tipo==tLong) {aux.val.l = s->var[vall].val.l;}
+        if (aux.tipo==tDouble) {aux.val.d = s->var[vall].val.d;}
+        if (aux.tipo==tChar) {aux.val.c = s->var[vall].val.c;}
+        if (aux.tipo==tStr) {aux.val.s = s->var[vall].val.s;}
+        if (aux.tipo==tBlc) {aux.val.s = s->var[vall].val.s;}
+        push(s,aux);
+        return 1;
+    }
+    return 0 ;
+}
+
+/// Função que lida com as atribuições das variáveis.
+int vars2p (STACK *s, char *token, STACK* raiz) {
+    if (strlen(token) == 2 && ':'==token[0] && isalpha (token[1]) != 0 )  {
+        int vall = ((int) token[1]) - 65;
+        raiz->var[vall] = s->pilha[s->topo];
+        return 1;
+    }
+    return 0;
+}

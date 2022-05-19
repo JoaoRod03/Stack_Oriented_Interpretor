@@ -1,3 +1,8 @@
+/**
+ * @file operacoes.c
+ * Ficheiro .c que contém as funções que tratam das operações lógicas utilizadas no projeto.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,15 +40,19 @@ int interroga (STACK *s, char *token) {
     return 0;
 }
 
+/// Função que compara dois valores no topo da stack, sendo que se o primeiro é maior que o segundo devolve 1 senão devolve 0.
 int mai(STACK *s,char *token) {
-    if(strcmp(token, ">") == 0) {
+    if (strcmp(token, ">") == 0) {
         tipos t1,t2,aux;
+
         t2 = pop(s);
         t1 = pop(s);
+
         if (t1.tipo == tStr && t2.tipo == tLong) {
             buscar_fim(s,t1,t2);
             return 1;
         }
+
         // Numeros reais (Comparação maior)
         if (t1.tipo==tLong || t1.tipo==tDouble || t2.tipo==tLong || t2.tipo==tDouble) {
             aux.tipo=tLong;
@@ -65,7 +74,7 @@ int mai(STACK *s,char *token) {
     return 0 ;
 }
 
-/// Função que se um valor for maior que o outro irá devolver 1 senão irá devolver 0.
+/// Função que compara dois valores no topo da stack, sendo que se o primeiro é menor que o segundo devolve 1 senão devolve 0.
 int men(STACK *s, char *token) {
     if (strcmp(token, "<") == 0) {
         tipos t1,t2,aux;
@@ -97,6 +106,7 @@ int men(STACK *s, char *token) {
     return 0 ;
 }
 
+/// Função que compara dois valores no topo da stack, sendo que se o primeiro é igual que o segundo devolve 1 senão devolve 0.
 int igual(STACK *s,char *token) {
     if(strcmp(token, "=") == 0) {
         tipos t1,t2,aux;
@@ -125,8 +135,9 @@ int igual(STACK *s,char *token) {
     return 0 ;
 }
 
-int nao(STACK *s,char *token) {
-    if(strcmp(token, "!") == 0) {
+/// Função que dado um valor no topo da stack se este for diferente de 0 devolve 0 senão devolve 1.
+int nao (STACK *s,char *token) {
+    if (strcmp(token, "!") == 0) {
         tipos t1,aux;
         aux.tipo=tLong;
 
@@ -144,7 +155,7 @@ int nao(STACK *s,char *token) {
 }
 
 
-///Função responsável por colocar o maior dos dois valores na stack.
+/// Função responsável por colocar o maior dos dois valores na stack.
 int maior(STACK *s,char *token) {
     if(strcmp(token, "e>") == 0) {
         tipos t1,t2,aux;
@@ -179,7 +190,7 @@ int maior(STACK *s,char *token) {
 }
 
 
-///Função responsável por colocar o menor dos dois valores na stack.
+/// Função responsável por colocar o menor dos dois valores na stack.
 int menor(STACK *s,char *token) {
     if(strcmp(token, "e<") == 0) {
         tipos t1,t2,aux;
@@ -213,7 +224,8 @@ int menor(STACK *s,char *token) {
     return 0 ;
 }
 
-int conjuncao (STACK *s,char *token) {
+/// Função que da pop a dois valores no topo da stack, se um destes for zero coloca na stack o valor 0, senão coloca o segundo elemento.
+int conjuncao (STACK *s, char *token) {
     if(strcmp(token, "e&") == 0) {
         tipos t1,t2;
         double v1=0,v2=0;
@@ -231,6 +243,7 @@ int conjuncao (STACK *s,char *token) {
     return 0 ;
 }
 
+/// Função que da pop a dois valores no topo da stack, se ambos forem 0 devolve 0. Se apenas 1 dos elementos for 0 devolve o que não é nulo.
 int disjuncao (STACK *s,char *token) {
     if(strcmp(token, "e|") == 0) {
         tipos t1,t2;

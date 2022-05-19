@@ -1,3 +1,8 @@
+/**
+ * @file blocos.c
+ * Ficheiro .c que contém as funções que tratam dos blocos.
+ */
+
 // Bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,6 +10,7 @@
 #include <math.h>
 #include <ctype.h>
 #include "Tipos.h"
+
 
 //\/\/\/\/\/\/\/\/\/\/\/|---->  BLOCOS  <-----|/\/\/\/\/\/\/\/\/\/\/\/
 

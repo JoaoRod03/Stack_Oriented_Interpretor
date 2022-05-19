@@ -1,4 +1,5 @@
-/*! \mainpage Pagina Inicial
+/*! 
+ * \mainpage Pagina Inicial
  *
  * \section intro_sec Projeto LI2 (stack)
  *

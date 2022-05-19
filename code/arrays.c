@@ -1,3 +1,8 @@
+/**
+* @file arrays.c
+* Ficheiro .c que contém as funções que tratam dos arrays utilizados no projeto. Contém algumas funcionalidades com strings.
+*/
+
 // Bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,7 +14,7 @@
 
 //\/\/\/\/\/\/\/\/\/\/\/|---->  ARRAYS  <-----|/\/\/\/\/\/\/\/\/\/\/\/
 
-///Função que devolve o tamanho do array ou string.
+/// Função que dado um array ou string devolve o seu tamanho. Dado um long devolve um array ordenado sendo 0 o primeiro elemento e X o ultimo.
 int range (STACK *s, char *token) {
     if (strcmp(token, ",") == 0) {
         tipos t1,aux;
@@ -59,6 +64,7 @@ int range (STACK *s, char *token) {
     return 0 ;
 }
 
+/// Função que se responsabiliza por receber várias linhas de input.
 int input_all (STACK *s, char *token) {
     if (strcmp(token, "t") == 0) {
         char line [BUFSIZ] ; 
@@ -87,18 +93,11 @@ int input_all (STACK *s, char *token) {
 
 /////////////////////////////////////////////////////////
 
-///Função responsável por concatenar strings e arrays.
+/// Função responsável por concatenar strings e arrays.
 void concatenar (STACK* s, tipos t1, tipos t2) {
-    tipos aux;
-
-    // Strings (Concatenar)  -------------------
-    if (t1.tipo==tStr && t2.tipo==tStr) {
-        int total_size = strlen(t1.val.s) + strlen(t2.val.s);
-        aux.tipo=tStr;
-        aux.val.s = (char*) malloc ((total_size+1) * (sizeof(char)));
-        strcpy (aux.val.s, t1.val.s);
-        strcat (aux.val.s, t2.val.s);
-        push(s,aux);
+    // Concatenar strings
+    if (t1.tipo==tStr || t2.tipo==tStr) {
+        concatenar_strings(s,t1,t2);
     }
     
     // Arrays (Concatenar)  -------------------
@@ -128,16 +127,17 @@ void concatenar (STACK* s, tipos t1, tipos t2) {
         push(s,t2);
     }
 
-    // Arrays e strings (Concatenar)
-    if (t1.tipo==tArr && t2.tipo==tStr) {
-        tipos aux;
-        aux.tipo=tChar;
-        int size2 = strlen(t2.val.s);
-        for (int i=0; i<size2; i++) {
-            aux.val.c = t2.val.s[i];
-            push(t1.val.arr, aux);
-        }
-        push(s,t1);
+}
+
+/// Continuação da função concatenar para strings.
+void concatenar_strings (STACK* s, tipos t1, tipos t2) {
+    if (t1.tipo==tStr && t2.tipo==tStr) {
+        int total_size = strlen(t1.val.s) + strlen(t2.val.s);
+        tipos aux; aux.tipo=tStr;
+        aux.val.s = (char*) malloc ((total_size+1) * (sizeof(char)));
+        strcpy (aux.val.s, t1.val.s);
+        strcat (aux.val.s, t2.val.s);
+        push(s,aux);
     }
 
     // Strings e char (Inserir)
@@ -158,8 +158,20 @@ void concatenar (STACK* s, tipos t1, tipos t2) {
         }
         push(s,aux);
     }
+
+    // Arrays e strings (Concatenar)
+    if (t1.tipo==tArr && t2.tipo==tStr) {
+        tipos aux; aux.tipo=tChar;
+        int size2 = strlen(t2.val.s);
+        for (int i=0; i<size2; i++) {
+            aux.val.c = t2.val.s[i];
+            push(t1.val.arr, aux);
+        }
+        push(s,t1);
+    }
 }
-///Função responsável por concatenar strings e arrays várias vezes.
+
+/// Função responsável por concatenar strings e arrays várias vezes.
 void concatenar_mul (STACK* s, tipos t1, tipos t2) { 
     tipos aux;
 
@@ -188,8 +200,7 @@ void concatenar_mul (STACK* s, tipos t1, tipos t2) {
     }
 }
 
-// TOKEN : '('
-///Função utilizada para remover o último caracter de uma string e para remover o último elemento de um array.
+/// Função utilizada para remover o último caracter de uma string e para remover o último elemento de um array.
 void remover_last (STACK* s, tipos t1) { 
     // Strings (Remover ultimo elemento)
     if (t1.tipo==tStr) {
@@ -212,7 +223,8 @@ void remover_last (STACK* s, tipos t1) {
         push(s,alvo);
     }
 }
-///Função utilizada para remover o primeiro caracter de uma string e para remover o primeiro elemento de um array.
+
+/// Função utilizada para remover o primeiro caracter de uma string e para remover o primeiro elemento de um array.
 void remover_first (STACK* s, tipos t1) { 
         // Strings (Remove primeiro carater)
         if (t1.tipo==tStr) {
@@ -248,8 +260,7 @@ void remover_first (STACK* s, tipos t1) {
         }
 }
 
-
-///Função que nas strings, vai buscar um caracter por índice e que nos arrays vai buscar um elemento por índice.
+/// Função que nas strings, vai buscar um caracter por índice e que nos arrays vai buscar um elemento por índice.
 void buscar_indice (STACK* s, tipos t1, tipos t2) { 
     tipos aux;
 
@@ -273,19 +284,19 @@ void buscar_indice (STACK* s, tipos t1, tipos t2) {
     }
 }
 
-
-///Função que nas strings, vai buscar x caracteres ao início e que nos arrays vai buscar x elementos ao início.
+/// Função que nas strings, vai buscar x caracteres ao início e que nos arrays vai buscar x elementos ao início.
 void buscar_inicio (STACK* s, tipos t1, tipos t2) { 
     tipos aux;
+
     if (t1.tipo == tStr && t2.tipo == tLong) {
-        tipos aux;
-        aux.tipo=tStr;
+        tipos aux; aux.tipo=tStr;
         aux.val.s = (char*) malloc(t2.val.l*sizeof(char));
         for (int i = 0; i < t2.val.l; i++) {
             aux.val.s[i]=t1.val.s[i];
         }
         push(s,aux);
     }
+
     // Buscar x carateres ao inicio
     if (t1.tipo == tStr && t2.tipo == tStr) {
            aux.tipo=tLong;
@@ -299,8 +310,7 @@ void buscar_inicio (STACK* s, tipos t1, tipos t2) {
     }
 }
 
-
-///Função que nas strings, vai buscar x caracteres ao fim e que nos arrays vai buscar x elementos ao fim.
+/// Função que nas strings, vai buscar x caracteres ao fim e que nos arrays vai buscar x elementos ao fim.
 void buscar_fim (STACK* s, tipos t1, tipos t2) { 
     tipos aux;
 
@@ -330,7 +340,7 @@ void buscar_fim (STACK* s, tipos t1, tipos t2) {
 }
 
 
-///Função responsável para ir a um array e dar push de todos elmentos para a stack.
+/// Função responsável para ir a um array e dar push de todos elmentos para a stack.
 void array_to_stack (STACK* s, tipos t1) { 
     tipos aux;
 
@@ -348,62 +358,4 @@ void array_to_stack (STACK* s, tipos t1) {
             push(s,aux);
         }
     }
-}
-
-void sub_igual (STACK* s, tipos t1, tipos t2) {
-    tipos aux; aux.val.l=-1;
-    aux.tipo=tLong;
-    int t = 0;
-
-    // Tamanho das strings
-    int size1 = strlen(t1.val.s); // string
-    int size2 = strlen(t2.val.s); // substring
-
-    for (int i = 0; i < size1; i++) {
-        if (t1.val.s[i]==t2.val.s[0]) {
-            t=1;
-            for (int j = 1; j < size2; j++) {
-                if (t1.val.s[j+i]!=t2.val.s[j]) {t=0;}
-            }
-            if (t==1) {aux.val.l=i;}
-        }
-    }
-
-    push(s, aux);
-}
-
-void substring (STACK* s, tipos t1, tipos t2) {
-    int i=0, startCopia=0;
-
-    // Tamanho das strings
-    int size1=strlen(t1.val.s);
-    int size2=strlen(t2.val.s);
-    
-    // Array
-    tipos array; array.tipo=tArr; array.val.arr = nova();
-
-
-    // Percorrer primeira string de 0 ate size1
-    for (;i<size1; i++) {
-        int iguais=0;
-
-        // Verificar substring na posição i
-        for (int w=0; w<(size2); w++) {
-            if (t1.val.s[w+i] == t2.val.s[w]) {iguais++;} 
-        }
-
-        // Se o tamanho dos carateres iguais for igual ao da 2 string vamos copiar para o array.
-        if (iguais==size2 || i==size1-1) {
-            if (i==size1-1) {i++;} // Copiar o que está no fim.
-            tipos aux; aux.tipo=tStr;
-            aux.val.s = (char*) malloc(100*sizeof(char));
-            for (int z=0; z<(i-startCopia); z++) {
-                aux.val.s[z] = t1.val.s[z+startCopia];
-            }
-            // Copiar para o array
-            push(array.val.arr,aux);
-            startCopia=i+size2;   
-        }
-    }
-    push(s,array);
 }

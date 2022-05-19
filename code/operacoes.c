@@ -1,8 +1,7 @@
 /**
-* @file operacoes.c
-* Ficheiro .c que contém as funções que tratam das operações utilizadas no projeto.
-*/
-
+ * @file operacoes.c
+ * Ficheiro .c que contém as funções que tratam das operações utilizadas no projeto.
+ */
 
 // Bibliotecas
 #include <stdio.h>

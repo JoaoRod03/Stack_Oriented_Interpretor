@@ -1,3 +1,8 @@
+/**
+* @file bitwize.c
+* Ficheiro .c que contém as funções que tratam das operações bitwize utilizadas no projeto.
+*/
+
 // Bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
