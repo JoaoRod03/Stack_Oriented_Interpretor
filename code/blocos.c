@@ -8,6 +8,7 @@
 
 //\/\/\/\/\/\/\/\/\/\/\/|---->  BLOCOS  <-----|/\/\/\/\/\/\/\/\/\/\/\/
 
+///Funçao responsável para executar um bloco.
 void executarBloco (STACK* stack, tipos t1) {
     char line[BUFSIZ];
     strcpy(line,t1.val.s);
@@ -42,8 +43,7 @@ void executarBloco (STACK* stack, tipos t1) {
         }
     }
 }   
-
-// Aplica um bloco a um array ou string (t2->bloco) (t1->arr)
+///Função que aplica um bloco a um array ou string.(t2->bloco) (t1->arr)
 void blocoAplicar (STACK* s, tipos t1, tipos bloco) {
     if (t1.tipo==tArr) {
         tipos temp[BUFSIZ];
@@ -61,7 +61,7 @@ void blocoAplicar (STACK* s, tipos t1, tipos bloco) {
     }
 }   
 
-// Aplica um bloco a um array 
+///Função que aplica um bloco a um array. 
 void fold (STACK* s, tipos t1, tipos bloco) {
     if (t1.tipo==tArr) {
         tipos temp[BUFSIZ];
@@ -83,7 +83,7 @@ void fold (STACK* s, tipos t1, tipos bloco) {
     }
 }   
 
-// Filtra um array
+///Função responsável por filtar um array.
 void filter (STACK* s, tipos t1, tipos bloco) {
     if (t1.tipo==tArr) {
         tipos temp[BUFSIZ];

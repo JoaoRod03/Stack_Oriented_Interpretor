@@ -46,6 +46,9 @@ STACK* nova() {
 *   @param [in] Stack
 *   @param [in] Token
 */ 
+
+
+/// Função responsavel por associar um token de um operador à sua função correspondente.
 void handle (STACK* s, char* token, STACK* raiz) {
     if (
     soma (s,token)         || 

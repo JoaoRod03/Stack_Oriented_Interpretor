@@ -46,16 +46,16 @@ typedef struct stack {
 
 /////////////////// INICIALIZAÇÃO DE FUNÇÕES ///////////////////
 // ------------------- HANDLER.C -------------------
-STACK* nova();      /// Função responsável por iniciar a stack
-void handle ();     /// Função responsavel por associar um token de um operador á sua função correspondente.
+STACK* nova();      /// Função responsável por iniciar a stack.
+void handle ();     /// Função responsavel por associar um token de um operador à sua função correspondente.
 int num ();         /// Função que trata dos tokens não reconhecidos e constantes, verifica o tipo do token e atribui uma operação.
-int top_tipo ();    /// Devolve o tipo do topo da stack
-int vars ();
-int vars2p ();
-void printStack();
-STACK* criarArray();
-char* criarBloco();
-void associaBloco();
+int top_tipo ();    /// Devolve o tipo do topo da stack.
+int vars ();        /// Função que lida com as variáveis.
+int vars2p ();      /// Função que lida com as atribuições das variáveis.
+void printStack();  /// Função responsável para dar print à stack.
+STACK* criarArray();/// Função responsável por criar a stack.
+char* criarBloco(); /// Função responsável por criar um bloco.
+void associaBloco();/// Função que associa um bloco.
 
 // ------------------- FUNCOES.C -------------------
 void push ();       /// Função que insere um elemento no topo da stack. 
@@ -91,27 +91,27 @@ int conv_char ();   /// Converte o topo da stack para char.
 
 // ------------------- LOGICA.C -------------------
 int mai (); 
-int men ();
-int interroga();
+int men ();         /// Função que se um valor for maior que o outro irá devolver 1 senão irá devolver 0.
+int interroga();    /// Função que lê input e insere o resultado desse input na stack.
 int igual ();
 int nao ();
-int maior ();
-int menor ();
+int maior ();       ///Função responsável por colocar o maior dos dois valores na stack.
+int menor ();       ///Função responsável por colocar o menor dos dois valores na stack.
 int conjuncao ();
 int disjuncao ();
 
 // ------------------- ARRAYS.C -------------------
-void removeAspas();
-int range ();
+void removeAspas();     ///Função responsável por remover as aspas.
+int range ();           ///Função que devolve o tamanho do array ou string.
 int input_all();
-void concatenar();
-void concatenar_mul();
-void remover_first();
-void remover_last();
-void buscar_indice();
-void buscar_inicio();
-void buscar_fim();
-void array_to_stack();
+void concatenar();      ///Função responsável por concatenar strings e arrays.
+void concatenar_mul();  ///Função responsável por concatenar strings e arrays várias vezes.
+void remover_first();   ///Função utilizada para remover o primeiro caracter de uma string e para remover o primeiro elemento de um array.
+void remover_last();    ///Função utilizada para remover o último caracter de uma string e para remover o último elemento de um array.
+void buscar_indice();   ///Função que nas strings, vai buscar um caracter por índice e que nos arrays vai buscar um elemento por índice.
+void buscar_inicio();   ///Função que nas strings, vai buscar x caracteres ao início e que nos arrays vai buscar x elementos ao início.
+void buscar_fim();      ///Função que nas strings, vai buscar x caracteres ao fim e que nos arrays vai buscar x elementos ao fim.
+void array_to_stack();  ///Função responsável para ir a um array e dar push de todos elmentos para a stack.
 void sub_igual();
 void substring();
 
@@ -124,8 +124,8 @@ int aspas();            /// Função que dado um token devolve o numero de aspas
 int div_whitespace ();  /// Função que divide uma string por cada whitespace existente, colocando as strings entre estes num array.
 
 // ------------------- BLOCOS.C -------------------
-void executarBloco();
-void blocoAplicar();
-void fold();
-void filter();
+void executarBloco();  ///Funçao responsável para executar um bloco.
+void blocoAplicar();   ///Função que aplica um bloco a um array ou string.
+void fold();           ///Função que aplica um bloco a um array. 
+void filter();         ///Função responsável por filtar um array.
 #endif // TIPOS_H

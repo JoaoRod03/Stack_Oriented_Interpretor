@@ -9,6 +9,7 @@
 
 //\/\/\/\/\/\/\/\/\/\/\/|---->  ARRAYS  <-----|/\/\/\/\/\/\/\/\/\/\/\/
 
+///Função que devolve o tamanho do array ou string.
 int range (STACK *s, char *token) {
     if (strcmp(token, ",") == 0) {
         tipos t1,aux;
@@ -86,6 +87,7 @@ int input_all (STACK *s, char *token) {
 
 /////////////////////////////////////////////////////////
 
+///Função responsável por concatenar strings e arrays.
 void concatenar (STACK* s, tipos t1, tipos t2) {
     tipos aux;
 
@@ -157,7 +159,7 @@ void concatenar (STACK* s, tipos t1, tipos t2) {
         push(s,aux);
     }
 }
-
+///Função responsável por concatenar strings e arrays várias vezes.
 void concatenar_mul (STACK* s, tipos t1, tipos t2) { 
     tipos aux;
 
@@ -187,6 +189,7 @@ void concatenar_mul (STACK* s, tipos t1, tipos t2) {
 }
 
 // TOKEN : '('
+///Função utilizada para remover o último caracter de uma string e para remover o último elemento de um array.
 void remover_last (STACK* s, tipos t1) { 
     // Strings (Remover ultimo elemento)
     if (t1.tipo==tStr) {
@@ -209,7 +212,7 @@ void remover_last (STACK* s, tipos t1) {
         push(s,alvo);
     }
 }
-
+///Função utilizada para remover o primeiro caracter de uma string e para remover o primeiro elemento de um array.
 void remover_first (STACK* s, tipos t1) { 
         // Strings (Remove primeiro carater)
         if (t1.tipo==tStr) {
@@ -245,6 +248,8 @@ void remover_first (STACK* s, tipos t1) {
         }
 }
 
+
+///Função que nas strings, vai buscar um caracter por índice e que nos arrays vai buscar um elemento por índice.
 void buscar_indice (STACK* s, tipos t1, tipos t2) { 
     tipos aux;
 
@@ -268,6 +273,8 @@ void buscar_indice (STACK* s, tipos t1, tipos t2) {
     }
 }
 
+
+///Função que nas strings, vai buscar x caracteres ao início e que nos arrays vai buscar x elementos ao início.
 void buscar_inicio (STACK* s, tipos t1, tipos t2) { 
     tipos aux;
     if (t1.tipo == tStr && t2.tipo == tLong) {
@@ -292,6 +299,8 @@ void buscar_inicio (STACK* s, tipos t1, tipos t2) {
     }
 }
 
+
+///Função que nas strings, vai buscar x caracteres ao fim e que nos arrays vai buscar x elementos ao fim.
 void buscar_fim (STACK* s, tipos t1, tipos t2) { 
     tipos aux;
 
@@ -320,6 +329,8 @@ void buscar_fim (STACK* s, tipos t1, tipos t2) {
     }
 }
 
+
+///Função responsável para ir a um array e dar push de todos elmentos para a stack.
 void array_to_stack (STACK* s, tipos t1) { 
     tipos aux;
 

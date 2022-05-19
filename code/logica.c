@@ -65,7 +65,7 @@ int mai(STACK *s,char *token) {
     return 0 ;
 }
 
-/// Se um valor for maior que o outro ira devolver 1 senão irá devolver 0
+/// Função que se um valor for maior que o outro irá devolver 1 senão irá devolver 0.
 int men(STACK *s, char *token) {
     if (strcmp(token, "<") == 0) {
         tipos t1,t2,aux;
@@ -143,6 +143,8 @@ int nao(STACK *s,char *token) {
     return 0 ;
 }
 
+
+///Função responsável por colocar o maior dos dois valores na stack.
 int maior(STACK *s,char *token) {
     if(strcmp(token, "e>") == 0) {
         tipos t1,t2,aux;
@@ -176,6 +178,8 @@ int maior(STACK *s,char *token) {
     return 0 ;
 }
 
+
+///Função responsável por colocar o menor dos dois valores na stack.
 int menor(STACK *s,char *token) {
     if(strcmp(token, "e<") == 0) {
         tipos t1,t2,aux;
